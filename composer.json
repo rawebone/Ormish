@@ -1,0 +1,22 @@
+{
+    "name": "rawebone/ormish",
+    "description": "A lightweight ORM",
+    "authors": [
+        {
+            "name": "Nick Rawe",
+            "email": "rawebone@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*",
+        "phpspec/prophecy": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Rawebone\\Ormish\\": [ "library/", "tests" ]
+        }
+    }
+}
