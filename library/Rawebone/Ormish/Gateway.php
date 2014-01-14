@@ -49,6 +49,12 @@ class Gateway implements GatewayInterface
         return $rows;
     }
 
+    public function findOneWhere($condition)
+    {
+        $records = $this->findOneWhere($condition);
+        return (isset($records[0]) ? $records[0] : null);
+    }
+    
     public function save(Entity $entity)
     {
         $info = $this->info;

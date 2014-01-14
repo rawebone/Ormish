@@ -27,6 +27,13 @@ interface GatewayInterface
     function findWhere($condition);
     
     /**
+     * Returns a single record where a condition is met on the table.
+     * 
+     * @return \Rawebone\Ormish\Entity
+     */
+    function findOneWhere($conditions);
+    
+    /**
      * Saves a record on the gateway.
      * 
      * @param \Rawebone\Ormish\Entity
