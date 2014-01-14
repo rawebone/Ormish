@@ -41,4 +41,11 @@ interface GatewayInterface
      * @return boolean
      */
     function delete(Entity $entity);
+    
+    /**
+     * Creates a new instance of the Model for the table.
+     * 
+     * @return \Rawebone\Ormish\Entity
+     */
+    function create(array $initial = array());
 }

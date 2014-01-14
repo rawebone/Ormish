@@ -63,6 +63,12 @@ class Gateway implements GatewayInterface
         }
     }
     
+    public function create(array $initial = array())
+    {
+        $name = $this->info->model();
+        return new $name($initial);
+    }
+    
     /**
      * Prepares an entity for use in the system.
      * 
