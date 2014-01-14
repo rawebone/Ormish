@@ -1,6 +1,8 @@
 {
     "name": "rawebone/ormish",
     "description": "A lightweight ORM",
+    "keywords": [ "orm", "database", "lightweight" ],
+    "license": "MIT",
     "authors": [
         {
             "name": "Nick Rawe",
@@ -16,7 +18,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Rawebone\\Ormish\\": [ "library/", "tests" ]
+            "Rawebone\\Ormish\\": [ "library/", "tests/" ]
         }
     }
 }
