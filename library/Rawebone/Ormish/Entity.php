@@ -13,6 +13,13 @@ abstract class Entity
      */
     protected $container;
     
+    /**
+     * The gateway to be used to save data back to the database.
+     *
+     * @var \Rawebone\Ormish\GatewayInterface
+     */
+    protected $gateway;
+    
     public function __construct(array $initial = array())
     {
         $this->modelApply($initial);
@@ -71,6 +78,19 @@ abstract class Entity
         $this->container = $container;
     }
     
+    
+    /**
+     * Sets the instance of the gateway that should be used to communicate 
+     * changes back to the database.
+     * 
+     * @param \Rawebone\Ormish\GatewayInterface $gateway
+     * @return void
+     */
+    public function modelGateway(GatewayInterface $gateway)
+    {
+        $this->gateway = $gateway;
+    }
+    
     /**
      * Initialise values on the model.
      * 
@@ -124,6 +144,18 @@ abstract class Entity
         }
         
         return $all;
+    }
+    
+    public function save()
+    {
+        if ($this->gateway->save($this)) {
+            $this->modelResetChanges();
+        }
+    }
+    
+    public function delete()
+    {
+        return $this->gateway->delete($this);
     }
     
     /**
