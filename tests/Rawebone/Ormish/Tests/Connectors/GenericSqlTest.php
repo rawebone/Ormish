@@ -89,7 +89,7 @@ class GenericSqlTest extends TestCase
              ->willReturn($stmt->reveal())
              ->shouldBeCalled();
         
-        $conn->lastInsertId()->shouldBeCalled()->willReturn(true);
+        $stmt->lastInsertId()->shouldBeCalled()->willReturn(true);
         
         $gsc = new GenericSql($conn->reveal());
         $this->assertEquals(true, $gsc->insert($this->tbl, $this->data));
