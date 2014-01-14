@@ -56,8 +56,10 @@ class Gateway implements GatewayInterface
         
         if (!$entity->$id) {
             return $this->connector->insert($info->table(), $entity->modelAll(true));
-        } else {
+        } else if (!$info->noUpdates()) {
             return $this->connector->update($info->table(), $entity->modelChanges(), $id, $entity->$id);
+        } else {
+            return false;
         }
     }
     
