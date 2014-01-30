@@ -20,15 +20,22 @@ interface GatewayInterface
     function find($id);
     
     /**
-     * Returns records where a condition is met on the table.
+     * Returns records where a condition is met on the table. Any additional
+     * arguments will be passed as parameters for the query. I.e.:
+     * 
+     * <code>
+     * $gateway->findWhere("a = ?", 1);
+     * </code>
      * 
      * @return array|\Rawebone\Ormish\Entity
      */
     function findWhere($condition);
     
     /**
-     * Returns a single record where a condition is met on the table.
+     * Returns a single record where a condition is met on the table. Calls
+     * findWhere internally and shares the same signature.
      * 
+     * @see findWhere
      * @return \Rawebone\Ormish\Entity
      */
     function findOneWhere($conditions);

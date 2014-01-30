@@ -35,10 +35,12 @@ class GenericSql implements ConnectorInterface
         return $stmt;
     }
 
-    public function findWhere($table, $has)
+    public function findWhere($table, $has, array $params = array())
     {
         $query = "SELECT * FROM $table WHERE deleted = 0 AND $has";
-        return $this->conn->query($query);
+        
+        $stmt = $this->conn->prepare($query);
+        return $stmt->execute($params);
     }
 
     public function insert($table, array $data)

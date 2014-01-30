@@ -38,8 +38,11 @@ class Gateway implements GatewayInterface
     
     public function findWhere($condition)
     {
+        $params = func_get_args();
+        array_shift($params); // Clear $condition
+        
         $info = $this->info;
-        $stmt = $this->connector->findWhere($info->table(), $condition);
+        $stmt = $this->connector->findWhere($info->table(), $condition, $params);
         $rows = $this->pop->populate($stmt, $info->model());
 
         foreach ($rows as $row) {
@@ -51,7 +54,7 @@ class Gateway implements GatewayInterface
 
     public function findOneWhere($condition)
     {
-        $records = $this->findOneWhere($condition);
+        $records = call_user_func_array(array($this, "findWhere"), func_get_args());
         return (isset($records[0]) ? $records[0] : null);
     }
     

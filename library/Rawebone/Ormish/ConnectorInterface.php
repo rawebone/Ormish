@@ -25,7 +25,7 @@ interface ConnectorInterface
      * 
      * @return \PDOStatement
      */
-    function findWhere($table, $has);
+    function findWhere($table, $has, array $params = array());
     
     /**
      * Generates and executes a query to delete a record from a table. 
