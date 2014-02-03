@@ -1,0 +1,4 @@
+suites:
+    ormish_suite:
+        src_path: library
+        
