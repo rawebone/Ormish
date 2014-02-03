@@ -90,4 +90,9 @@ class ExecutorSpec extends ObjectBehavior
         $err->query()->shouldReturn("INSERT INTO boot () VALUES()");
         $err->params()->shouldReturn(array());
     }
+    
+    function it_should_return_a_pdo_object()
+    {
+        $this->connection()->shouldReturnAnInstanceOf('PDO');
+    }
 }

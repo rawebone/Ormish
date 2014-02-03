@@ -20,16 +20,47 @@ class Executor
         $this->log = $log;
     }
 
+    /**
+     * Returns the encapsulated connection object.
+     * 
+     * @return \PDO
+     */
+    public function connection()
+    {
+        return $this->pdo;
+    }
+    
+    /**
+     * Executes a query and returns a Statement object or an Error.
+     * 
+     * @param string $query
+     * @param array $params
+     * @return \PDOStatement|\Rawebone\Ormish\Error
+     */
     public function query($query, array $params)
     {
         return $this->handle($query, $params);
     }
     
+    /**
+     * Executes a statement and returns whether it was successful.
+     * 
+     * @param string $query
+     * @param array $params
+     * @return true|\Rawebone\Ormish\Error
+     */
     public function exec($query, array $params)
     {
         return (($err = $this->handle($query, $params)) instanceof Error ? $err : true);
     }
     
+    /**
+     * This does the leg work for querying and execution.
+     * 
+     * @param string $query
+     * @param array $params
+     * @return \PDOStatement|\Rawebone\Ormish\Error
+     */
     protected function handle($query, array $params)
     {
         $stmt = $this->pdo->prepare($query);
