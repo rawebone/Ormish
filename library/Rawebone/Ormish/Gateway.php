@@ -1,50 +1,75 @@
 <?php
+
 namespace Rawebone\Ormish;
 
 class Gateway implements GatewayInterface
 {
-    protected $connector;
-    protected $info;
-    protected $pop;
-    protected $container;
+    protected $database;
+    protected $table;
+    protected $generator;
+    protected $executor;
+    protected $populator;
     
-    public function __construct(ConnectorInterface $connector, Populator $pop, ModelInfo $info, Container $orm)
+    public function __construct(Database $db, Table $tbl, 
+        SqlGeneratorInterface $gen, Executor $exec, Populator $pop)
     {
-        $this->connector = $connector;
-        $this->info = $info;
-        $this->pop = $pop;
-        $this->container = $orm;
+        $this->database = $db;
+        $this->table = $tbl;
+        $this->generator = $gen;
+        $this->executor = $exec;
+        $this->populator = $pop;
+    }
+
+    public function create(array $initial = array())
+    {
+        $name = $this->table->model();
+        return $this->prepareEntity(new $name($initial));
     }
 
     public function delete(Entity $entity)
     {
-        $info = $this->info;
-        $id   = $info->id();
-        return $this->connector->delete($info->table(), $id, $entity->$id, $info->softDelete());
+        if ($this->table->readOnly()) {
+            return false;
+        }
     }
 
     public function find($id)
     {
-        $info = $this->info;
-        $stmt = $this->connector->find($info->table(), $info->id(), $id);
-        $rows = $this->pop->populate($stmt, $info->model());
+        $query = $this->generator->find($this->table->table(), $this->table->id());
+        $stmt  = $this->executor->query($query, array($id));
         
-        if (isset($rows[0])) {
-            return $this->prepareEntity($rows[0]);
-        } else {
+        if ($stmt instanceof Error) {
+            return $stmt;
+        }
+        
+        $ents  = $this->populator->populate($stmt, $this->table->model());
+        
+        if (!isset($ents[0])) {
             return null;
+        } else {
+            return $this->prepareEntity($ents[0]);
         }
     }
-    
+
+    public function findOneWhere($conditions)
+    {
+        $rows = call_user_func_array(array($this, "findWhere"), func_get_args());
+        return isset($rows[0]) ? $rows[0] : null;
+    }
+
     public function findWhere($condition)
     {
         $params = func_get_args();
         array_shift($params); // Clear $condition
         
-        $info = $this->info;
-        $stmt = $this->connector->findWhere($info->table(), $condition, $params);
-        $rows = $this->pop->populate($stmt, $info->model());
-
+        $query = $this->generator->findWhere($this->table->table(), $condition);
+        $stmt  = $this->executor->query($query, $params);
+        
+        if ($stmt instanceof Error) {
+            return $stmt;
+        }
+        
+        $rows = $this->populator->populate($stmt, $this->table->model());
         foreach ($rows as $row) {
             $this->prepareEntity($row);
         }
@@ -52,30 +77,21 @@ class Gateway implements GatewayInterface
         return $rows;
     }
 
-    public function findOneWhere($condition)
-    {
-        $records = call_user_func_array(array($this, "findWhere"), func_get_args());
-        return (isset($records[0]) ? $records[0] : null);
-    }
-    
     public function save(Entity $entity)
     {
-        $info = $this->info;
-        $id   = $info->id();
-        
-        if (!$entity->$id) {
-            return $this->connector->insert($info->table(), $entity->modelAll(true));
-        } else if (!$info->noUpdates()) {
-            return $this->connector->update($info->table(), $entity->modelChanges(), $id, $entity->$id);
-        } else {
+        if ($this->table->readOnly()) {
             return false;
         }
-    }
-    
-    public function create(array $initial = array())
-    {
-        $name = $this->info->model();
-        return new $name($initial);
+        
+        $id = $this->table->id();
+        
+        if ($entity->$id === null) { // Perform insert
+            list($query, $params) = $this->generator->insert($this->table->table(), $entity->all());
+            return $this->executor->exec($query, $params);
+        } else { // Perform update
+            list($query, $params) = $this->generator->update($this->table->table(), $entity->all(), $id, $entity->$id);
+            return $this->executor->exec($query, $params);
+        }
     }
     
     /**
@@ -86,8 +102,13 @@ class Gateway implements GatewayInterface
      */
     protected function prepareEntity(Entity $entity)
     {
-        $entity->modelContainer($this->container);
-        $entity->modelGateway($this);
+        $shadow = $this->table->readOnly() ? new NullShadow() : new Shadow();
+        $shadow->update($entity->all());
+        
+        $entity->letDatabase($this->database);
+        $entity->letShadow($shadow);
+        $entity->letGateway($this);
+        
         return $entity;
     }
 }

@@ -9,8 +9,8 @@ interface GatewayInterface
     /**
      * Creates the gateway.
      */
-    function __construct(ConnectorInterface $connector, Populator $pop, ModelInfo $info, Container $orm);
-
+    function __construct(Database $db, Table $tbl, SqlGeneratorInterface $gen, Executor $exec, Populator $pop);
+    
     /**
      * Finds a record on the gateway by $id.
      * 
