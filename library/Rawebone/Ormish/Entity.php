@@ -1,195 +1,88 @@
 <?php
+
 namespace Rawebone\Ormish;
 
-abstract class Entity
+/**
+ * Entity is the core of Ormish, providing a simplistic interface for creating
+ * smart Domain Objects.
+ */
+class Entity
 {
-    private $initialising = true;
-    private $changes = array();
-    
-    /**
-     * The container to be used when looking for related data.
-     *
-     * @var \Rawebone\Ormish\Container
-     */
-    protected $container;
-    
-    /**
-     * The gateway to be used to save data back to the database.
-     *
-     * @var \Rawebone\Ormish\GatewayInterface
-     */
-    protected $gateway;
-    
+    private $values;
+    private $shadow;
+    private $gateway;
+    private $database;
+
     public function __construct(array $initial = array())
     {
-        $this->modelApply($initial);
-        $this->initialising = false;
+        $defaults = array(
+            "deleted" => 0,
+        );
+        
+        $this->values = array_merge($defaults, $initial);
     }
     
-    /**
-     * Get the value of a field in the data set, optionally via a method first.
-     * 
-     * @param string $name
-     * @return mixed
-     */
     public function __get($name)
     {
-        $via = "get" . $this->modelGetFilter($name);
-        return (method_exists($this, $via) ? $this->$via($this->$name) : $this->$name);
+        return isset($this->values[$name]) ? $this->values[$name] : null;
     }
     
-    /**
-     * Set the value of a field in the data set, optionally via a method first.
-     * 
-     * @param string $name
-     * @param mixed $value
-     * @return void 
-     */
     public function __set($name, $value)
     {
-        $via = "set" . $this->modelGetFilter($name);
-        $this->$name = (method_exists($this, $via) ? $this->$via($value) : $value);
-        
-        $this->modelRecordChange($name, $this->$name);
+        $this->values[$name] = $value;
     }
 
-    /**
-     * Used to call a relationship.
-     * 
-     * @param string $name
-     * @param array $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments)
+    public function letShadow(Shadow $shadow)
     {
-        $via = "relate" . $this->modelGetFilter($name);
-        return (method_exists($this, $via) ? call_user_func_array(array($this, $via), $arguments) : null);
+        $this->shadow = $shadow;
     }
-    
-    /**
-     * Sets the orm instance that should be used for interacting with other
-     * tables.
-     * 
-     * @param \Rawebone\Ormish\Container $container
-     * @return void
-     */
-    public function modelContainer(Container $container)
+
+    public function letDatabase(Database $database)
     {
-        $this->container = $container;
+        $this->database = $database;
     }
-    
-    
-    /**
-     * Sets the instance of the gateway that should be used to communicate 
-     * changes back to the database.
-     * 
-     * @param \Rawebone\Ormish\GatewayInterface $gateway
-     * @return void
-     */
-    public function modelGateway(GatewayInterface $gateway)
+
+    public function letGateway(GatewayInterface $gateway)
     {
         $this->gateway = $gateway;
     }
-    
-    /**
-     * Initialise values on the model.
-     * 
-     * @param array $values
-     * @return void
-     */
-    public function modelApply(array $values)
-    {
-        foreach ($values as $key => $value) {
-            $this->__set($key, $value);
-        }
-    }
-    
-    /**
-     * Returns any values which have changed on the Model.
-     * 
-     * @return array
-     */
-    public function modelChanges()
-    {
-        return $this->changes;
-    }
-    
-    /**
-     * Resets the changes cache.
-     * 
-     * @return void
-     */
-    public function modelResetChanges()
-    {
-        $this->changes = array();
-    }
-    
-    /**
-     * Returns all of the data of the model.
-     * 
-     * @param boolean $raw Whether values should be filtered or not
-     * @return array
-     */
-    public function modelAll($raw = true)
-    {
-        $rc   = new \ReflectionClass($this);
-        $all  = array();
-        $self = __NAMESPACE__ . "\\Entity";
-        
-        foreach ($rc->getProperties(\ReflectionProperty::IS_PROTECTED) as $prop) {
-            if ($prop->class !== $self) {
-                $name = $prop->getName();
-                $all[$name] = $raw ? $this->$name : $this->__get($name);
-            }
-        }
-        
-        return $all;
-    }
-    
+
     public function save()
     {
-        if ($this->gateway->save($this)) {
-            $this->modelResetChanges();
+        if (!$this->gateway->save($this)) {
+            return false;
         }
+        
+        $this->shadow->update($this->values);
+        return true;
     }
-    
+
     public function delete()
     {
-        return $this->gateway->delete($this);
-    }
-    
-    /**
-     * Whether the Model is initialising or not.
-     * 
-     * @return boolean
-     */
-    protected function modelIsInit()
-    {
-        return $this->initialising;
-    }
-    
-    /**
-     * Normalises a name into something appropriate for a method; 
-     * i.e. hi_lloyd => HiLloyd, lloyd => Lloyd.
-     * 
-     * @param string $name
-     * @return string
-     */
-    protected function modelGetFilter($name)
-    {
-        return str_replace(" ", "", ucwords(str_replace("_", " ", $name)));
-    }
-    
-    /**
-     * Records when a value of a property changes for differential updates.
-     * 
-     * @param string $name
-     * @param mixed $new
-     */
-    protected function modelRecordChange($name, $new)
-    {
-        if (!$this->initialising && (!isset($this->changes[$name]) || $this->changes[$name] !== $new)) {
-            $this->changes[$name] = $new;
+        if (!$this->gateway->delete($this)) {
+            return false;
         }
+        
+        $this->__set("deleted", 1);
+        $this->shadow->update($this->values);
+        return true;
+    }
+    
+    public function all()
+    {
+        return $this->values;
+    }
+    
+    public function changes()
+    {
+        return $this->shadow->changes($this->values);
+    }
+    
+    /**
+     * @return \Rawebone\Ormish\Database
+     */
+    protected function getDatabase()
+    {
+        return $this->database;
     }
 }
