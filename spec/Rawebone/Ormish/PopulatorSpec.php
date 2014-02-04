@@ -14,11 +14,8 @@ class PopulatorSpec extends ObjectBehavior
     
     function it_should_populate(\PDOStatement $stmt)
     {
-        $cls = "My\\Cls";
-        
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, $cls)->shouldBeCalled();
-        $stmt->fetchObject()->willReturn(null);
-        
+        $cls = 'Rawebone\Ormish\Entity';
+        $stmt->fetch(\PDO::FETCH_ASSOC)->shouldBeCalled();
         $this->populate($stmt, $cls)->shouldReturn(array());
     }
 }

@@ -12,11 +12,10 @@ class Populator
      */
     public function populate(\PDOStatement $stmt, $className)
     {
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, $className);
         $records = array();
         
-        while (($record = $stmt->fetchObject())) {
-            $records[] = $record;
+        while (($record = $stmt->fetch(\PDO::FETCH_ASSOC))) {
+            $records[] = new $className($record);
         }
         
         return $records;
