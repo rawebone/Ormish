@@ -91,7 +91,6 @@ class EntitySpec extends ObjectBehavior
     
     function it_should_return_changes($shadow)
     {
-        
         $shadow->changes(array(
             "deleted" => 0,
             "key" => "value"
@@ -108,5 +107,16 @@ class EntitySpec extends ObjectBehavior
         $this->changes()->shouldReturn(array(
             "key" => "new"
         ));
+    }
+    
+    function it_should_have_change($shadow)
+    {
+        $shadow->changes(array(
+            "deleted" => 0,
+            "key" => "new"
+        ))->willReturn(array("key" => "new"));
+        
+        $this->key = "new";
+        $this->hasChanged()->shouldReturn(true);
     }
 }

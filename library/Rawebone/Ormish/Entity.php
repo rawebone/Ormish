@@ -9,8 +9,26 @@ namespace Rawebone\Ormish;
 class Entity
 {
     private $values;
+    
+    /**
+     * The shadow to be used to track changes.
+     *
+     * @var \Rawebone\Ormish\Shadow
+     */
     private $shadow;
+    
+    /**
+     * The gateway to be used to update the entity in the database.
+     *
+     * @var \Rawebone\Ormish\GatewayInterface
+     */
     private $gateway;
+    
+    /**
+     * The database that the entity belongs to.
+     *
+     * @var \Rawebone\Ormish\Database
+     */
     private $database;
 
     public function __construct(array $initial = array())
@@ -76,6 +94,11 @@ class Entity
     public function changes()
     {
         return $this->shadow->changes($this->values);
+    }
+    
+    public function hasChanged()
+    {
+        return count($this->shadow->changes($this->values)) > 0;
     }
     
     /**
