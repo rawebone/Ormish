@@ -85,13 +85,20 @@ class Gateway implements GatewayInterface
         
         $id = $this->table->id();
         
-        if ($entity->$id === null) { // Perform insert
-            list($query, $params) = $this->generator->insert($this->table->table(), $entity->all());
-            return $this->executor->exec($query, $params);
-        } else { // Perform update
-            list($query, $params) = $this->generator->update($this->table->table(), $entity->all(), $id, $entity->$id);
-            return $this->executor->exec($query, $params);
-        }
+        return ($entity->$id === null ? $this->tryInsert($entity) : $this->tryUpdate($entity));
+    }
+    
+    protected function tryInsert(Entity $entity)
+    {
+        list($query, $params) = $this->generator->insert($this->table->table(), $entity->all());
+        return $this->executor->exec($query, $params);
+    }
+    
+    protected function tryUpdate(Entity $entity)
+    {
+        $id = $this->table->id();
+        list($query, $params) = $this->generator->update($this->table->table(), $entity->all(), $id, $entity->$id);
+        return $this->executor->exec($query, $params);
     }
     
     /**
