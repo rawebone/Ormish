@@ -90,8 +90,15 @@ class Gateway implements GatewayInterface
     
     protected function tryInsert(Entity $entity)
     {
+        $id = $this->table->id();
+        
         list($query, $params) = $this->generator->insert($this->table->table(), $entity->all());
-        return $this->executor->exec($query, $params);
+        if ($this->executor->exec($query, $params)) {
+            $entity->$id = (int)$this->executor->lastInsertId();
+            return true;
+        } else {
+            return false;
+        }
     }
     
     protected function tryUpdate(Entity $entity)

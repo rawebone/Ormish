@@ -54,9 +54,12 @@ class GatewaySpec extends ObjectBehavior
         $this->save($ent)->shouldReturn(false);
         
         $exec->exec('whatever', array())->willReturn(true);
+        $exec->lastInsertId()->willReturn("1");
         $this->save($ent)->shouldReturn(true);
         
-        // @todo This should also update the ID field with the inserted ID
+        if ($ent->id !== 1) {
+            throw new \Exception("ID not set");
+        }
     }
     
     function it_should_update($tbl, $ent, $exec, $gen)
