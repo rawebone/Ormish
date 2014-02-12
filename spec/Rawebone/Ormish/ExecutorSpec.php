@@ -95,4 +95,13 @@ class ExecutorSpec extends ObjectBehavior
     {
         $this->connection()->shouldReturnAnInstanceOf('PDO');
     }
+    
+    function it_should_marshall_call_to_lastInsertId($pdo)
+    {
+        $pdo->lastInsertId()
+            ->willReturn(1)
+            ->shouldBeCalled();
+        
+        $this->lastInsertId()->shouldReturn(1);
+    }
 }

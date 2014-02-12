@@ -55,6 +55,17 @@ class Executor
     }
     
     /**
+     * Marshalls call to PDO::lastInsertId for convenience.
+     * 
+     * @see \PDO::lastInsertId()
+     * @return string
+     */
+    public function lastInsertId()
+    {
+        return $this->pdo->lastInsertId();
+    }
+    
+    /**
      * This does the leg work for querying and execution.
      * 
      * @param string $query
