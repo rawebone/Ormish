@@ -19,12 +19,14 @@ class DatabaseSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Rawebone\Ormish\Database');
+        $this->getExector()->shouldBeAnInstanceOf('Rawebone\Ormish\Executor');
     }
     
     function it_should_attach_and_return()
     {
         $this->attach(new Table("Blah", "blah"))->shouldReturn(null);
         $this->get("blah")->shouldReturnAnInstanceOf('Rawebone\Ormish\Gateway');
+        $this->blah()->shouldReturnAnInstanceOf('Rawebone\Ormish\Gateway');
     }
     
     function it_should_throw_an_exception_when_getting_invalid_table()

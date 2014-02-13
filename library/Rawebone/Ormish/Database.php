@@ -20,6 +20,11 @@ class Database
         $this->populator = $pop;
     }
 
+    public function __call($name, $args)
+    {
+        return $this->get($name);
+    }
+    
     public function attach(Table $tbl)
     {
         $gate = new Gateway($this, $tbl, $this->generator, $this->executor, $this->populator);
@@ -33,5 +38,15 @@ class Database
         }
         
         return $this->tables[$table];
+    }
+    
+    /**
+     * Returns the executor currently in use.
+     * 
+     * @return \Rawebone\Ormish\Executor
+     */
+    public function getExector()
+    {
+        return $this->executor;
     }
 }
