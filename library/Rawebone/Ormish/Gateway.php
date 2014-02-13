@@ -9,6 +9,8 @@ class Gateway implements GatewayInterface
     protected $generator;
     protected $executor;
     protected $populator;
+    protected $meta;
+    protected $defaults;
     
     public function __construct(Database $db, Table $tbl, 
         SqlGeneratorInterface $gen, Executor $exec, Populator $pop)
@@ -18,12 +20,17 @@ class Gateway implements GatewayInterface
         $this->generator = $gen;
         $this->executor = $exec;
         $this->populator = $pop;
+        
+        $this->meta = new MetaDataManager();
+        $this->defaults = new DefaultsCreator();
     }
 
     public function create(array $initial = array())
     {
         $name = $this->table->model();
-        return $this->prepareEntity(new $name($initial));
+        $defaults = $this->defaults->make($this->meta->metadata($name));
+        
+        return $this->prepareEntity(new $name(array_merge($defaults, $initial)));
     }
 
     public function delete(Entity $entity)
