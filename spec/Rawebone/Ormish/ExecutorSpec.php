@@ -104,4 +104,19 @@ class ExecutorSpec extends ObjectBehavior
         
         $this->lastInsertId()->shouldReturn(1);
     }
+    
+    /**
+     * @param \PDO $pdo
+     */
+    function it_should_marshall_calls_for_transactions($pdo)
+    {
+        $pdo->beginTransaction()->shouldBeCalled();
+        $this->beginTransaction();
+        
+        $pdo->commit()->shouldBeCalled();
+        $this->commit();
+        
+        $pdo->rollBack()->shouldBeCalled();
+        $this->rollback();
+    }
 }

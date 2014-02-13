@@ -31,6 +31,39 @@ class Executor
     }
     
     /**
+     * Marshalls call to PDO::beginTransaction for convenience.
+     * 
+     * @see \PDO::beginTransaction()
+     * @return bool
+     */
+    public function beginTransaction()
+    {
+        return $this->pdo->beginTransaction();
+    }
+    
+    /**
+     * Marshalls call to PDO::commit for convenience.
+     * 
+     * @see \PDO::commit()
+     * @return bool
+     */
+    public function commit()
+    {
+        return $this->pdo->commit();
+    }
+    
+    /**
+     * Marshalls call to PDO::rollBack for convenience.
+     * 
+     * @see \PDO::rollBack()
+     * @return bool
+     */
+    public function rollback()
+    {
+        return $this->pdo->rollBack();
+    }
+    
+    /**
      * Executes a query and returns a Statement object or an Error.
      * 
      * @param string $query
