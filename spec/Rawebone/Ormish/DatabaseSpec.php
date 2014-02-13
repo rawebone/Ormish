@@ -19,7 +19,7 @@ class DatabaseSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Rawebone\Ormish\Database');
-        $this->getExector()->shouldBeAnInstanceOf('Rawebone\Ormish\Executor');
+        $this->getExecutor()->shouldBeAnInstanceOf('Rawebone\Ormish\Executor');
     }
     
     function it_should_attach_and_return()

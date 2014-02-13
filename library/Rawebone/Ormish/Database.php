@@ -67,7 +67,7 @@ class Database
      * 
      * @return \Rawebone\Ormish\Executor
      */
-    public function getExector()
+    public function getExecutor()
     {
         return $this->executor;
     }
