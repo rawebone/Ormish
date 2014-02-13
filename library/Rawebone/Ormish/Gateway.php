@@ -29,6 +29,11 @@ class Gateway implements GatewayInterface
     {
         $name = $this->table->model();
         $defaults = $this->defaults->make($this->meta->metadata($name));
+
+        
+        if (isset($defaults[$this->table->id()])) { // Ensure we can save properly
+            $defaults[$this->table->id()] = null;
+        }
         
         return $this->prepareEntity(new $name(array_merge($defaults, $initial)));
     }

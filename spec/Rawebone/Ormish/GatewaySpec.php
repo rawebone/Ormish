@@ -27,6 +27,7 @@ class GatewaySpec extends ObjectBehavior
     function it_should_create($tbl)
     {
         $tbl->model()->willReturn('Rawebone\Ormish\Entity');
+        $tbl->id()->willReturn("id");
         $tbl->readOnly()->willReturn(false);
         $this->create()->shouldReturnAnInstanceOf('Rawebone\Ormish\Entity');
     }
