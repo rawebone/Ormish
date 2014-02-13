@@ -24,8 +24,14 @@ class DatabaseSpec extends ObjectBehavior
     
     function it_should_attach_and_return()
     {
-        $this->attach(new Table("Blah", "blah"))->shouldReturn(null);
+        // Fluent attaching
+        $this->attach(new Table("Blah", "blah"))
+             ->shouldReturnAnInstanceOf('Rawebone\Ormish\Database');
+        
+        // Standard getting
         $this->get("blah")->shouldReturnAnInstanceOf('Rawebone\Ormish\Gateway');
+        
+        // "Magic" getting, nicer for more natural usage.
         $this->blah()->shouldReturnAnInstanceOf('Rawebone\Ormish\Gateway');
     }
     
