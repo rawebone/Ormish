@@ -11,7 +11,8 @@
     ],
     "require": {
         "php": ">=5.3",
-        "psr/log": "*"
+        "psr/log": "*",
+        "phpdocumentor/reflection-docblock": "2.0.1"
     },
     "require-dev": {
         "phpspec/phpspec": "2.0.x-dev"
