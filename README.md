@@ -15,22 +15,23 @@ The ORM is pretty simple to get to grips with:
 ```php
 <?php
 
-use Rawebone\Ormish\Container;
-use Rawebone\Ormish\ModelInfo;
-use Rawebone\Ormish\Connectors\GenericSql;
+use Rawebone\Ormish\Table;
+use Rawebone\Ormish\Factory;
 
-// We create a container which encapsulates our tables and a query connector.
-// The query connector itself encapsulates a PDO connection.
-$orm = new Container(new GenericSql(new PDO("sqlite::memory:")));
+// We use the factory to build a connection
+$factory = new Factory("sqlite::memory:", "", "");
+$orm = $factory->build();
 
 // We then "Attach" tables to the container - these are used to provide the
-// information we need to connect tables to classes.
-$orm->attach(new ModelInfo("\\My\\Entities\\Entity", "data_table"));
+// information we need to connect tables to classes and give options for
+// the way SQL should be generated.
+$orm->attach(new Table('My\Models\Entity', "data_table"));
 
 // We can then access the database table via it's name, which returns a gateway
 // object. This allows us to perform actions such as finding data on our table
-// using the options from the ModelInfo object.
+// using the options from the Table object.
 $gateway = $orm->data_table();
+$gateway = $orm->get("data_table");
 
 // We can then find a record
 $model = $gateway->find(1);
@@ -39,7 +40,7 @@ $model = $gateway->find(1);
 $model->name = "Barry";
 
 // Relationships are accessed by methods
-$model->sons(); // array(Sons)
+$model->sons(); // Sons[]
 
 // We can save or delete the model directly 
 $model->save();
@@ -71,40 +72,16 @@ use Rawebone\Ormish\Entity as BaseEntity;
  */
 class Entity extends BaseEntity
 {
-    // Properties for our entity must be of a protected visibility to be 
-    // tracked properly by the ORM.
-    protected $id;
-    protected $name;
-    protected $complex_name;
-
-    protected function getComplexName()
+    public function sons()
     {
-        // This can be used to filter a value on output
-        return strtoupper($this->complex_name);
-    }
-
-    protected function setComplexName($value)
-    {
-        // This can be used to filter a value on input; it should return
-        // the new value.
-        return strtolower($value);
-    }
-
-    protected function relateSons()
-    {
-        // When we call a method, i.e. sons(), it gets directed to this handler
-        // which should return any records appropriate for the relationship.
-
-        // This is, granted, nieve but for one-to-one/one-to-many this should
-        // be more than sufficient.
-        return $this->container->data_table()->find(2);
+        return $this->getDatabase()->findWhere("parent_id = ?", $this->id);
     }
 }
 
 ```
 
 There is a little more boilerplate required for this compared to other systems,
-but the payoff is that you a simple mechanism to keep everything in check.
+but the payoff is that you have a simple mechanism to keep everything in check.
 
 ## License
 
