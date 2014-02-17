@@ -40,9 +40,15 @@ class Gateway implements GatewayInterface
 
     public function delete(Entity $entity)
     {
-        if ($this->table->readOnly()) {
+        $tbl = $this->table;
+        if ($tbl->readOnly()) {
             return false;
         }
+        
+        $id = $tbl->id();
+        $query = $this->generator->delete($tbl->table(), $id, $tbl->softDelete());
+        
+        return $this->executor->exec($query, array($entity->$id));
     }
 
     public function find($id)

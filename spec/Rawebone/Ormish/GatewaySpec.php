@@ -40,6 +40,12 @@ class GatewaySpec extends ObjectBehavior
         $this->delete($ent)->shouldReturn(false);
     }
     
+    /**
+     * @param \Rawebone\Ormish\Table $tbl
+     * @param \Rawebone\Ormish\Entity $ent
+     * @param \Rawebone\Ormish\Executor $exec
+     * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
+     */
     function it_should_insert($tbl, $ent, $exec, $gen)
     {
         $tbl->readOnly()->willReturn(false);
@@ -63,6 +69,12 @@ class GatewaySpec extends ObjectBehavior
         }
     }
     
+    /**
+     * @param \Rawebone\Ormish\Table $tbl
+     * @param \Rawebone\Ormish\Entity $ent
+     * @param \Rawebone\Ormish\Executor $exec
+     * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
+     */
     function it_should_update($tbl, $ent, $exec, $gen)
     {
         $tbl->readOnly()->willReturn(false);
@@ -81,11 +93,34 @@ class GatewaySpec extends ObjectBehavior
         $this->save($ent)->shouldReturn(true);
     }
     
-    function it_should_delete($tbl, $ent, $exec, $gen)
+    /**
+     * @param \Rawebone\Ormish\Table $tbl
+     * @param \Rawebone\Ormish\Entity $ent
+     * @param \Rawebone\Ormish\Executor $exec
+     * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
+     */
+    function it_should_soft_delete($tbl, $ent, $exec, $gen)
     {
+        $tbl->id()->willReturn("id");
+        $tbl->table()->willReturn("tbl");
+        $tbl->softDelete()->willReturn(true);
+        $tbl->readOnly()->willReturn(false);
         
+        $ent->id = 1;
+        
+        $gen->delete("tbl", "id", true)->willReturn("DELETE");
+        $exec->exec("DELETE", array(1))->willReturn(true);
+        
+        $this->delete($ent)->shouldReturn(true);
     }
     
+    /**
+     * @param \Rawebone\Ormish\Table $tbl
+     * @param \Rawebone\Ormish\Entity $ent
+     * @param \Rawebone\Ormish\Executor $exec
+     * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
+     * @param \Rawebone\Ormish\Populator $pop
+     */
     function it_should_find($tbl, $exec, $gen, $pop, \PDOStatement $stmt, $ent)
     {
         $tbl->model()->willReturn('Rawebone\Ormish\Entity');
@@ -111,6 +146,13 @@ class GatewaySpec extends ObjectBehavior
         $this->find(1)->shouldReturn($ent);
     }
     
+    /**
+     * @param \Rawebone\Ormish\Table $tbl
+     * @param \Rawebone\Ormish\Entity $ent
+     * @param \Rawebone\Ormish\Executor $exec
+     * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
+     * @param \Rawebone\Ormish\Populator $pop
+     */
     function it_should_find_with_conditions($tbl, $exec, $gen, $pop, \PDOStatement $stmt)
     {
         
