@@ -72,6 +72,10 @@ class Gateway implements GatewayInterface
     public function findOneWhere($conditions)
     {
         $rows = call_user_func_array(array($this, "findWhere"), func_get_args());
+        if ($rows instanceof Error) {
+            return $rows;
+        }
+        
         return isset($rows[0]) ? $rows[0] : null;
     }
 

@@ -153,8 +153,20 @@ class GatewaySpec extends ObjectBehavior
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
      * @param \Rawebone\Ormish\Populator $pop
      */
-    function it_should_find_with_conditions($tbl, $exec, $gen, $pop, \PDOStatement $stmt)
-    {
-        
-    }
+//    function it_should_find_with_conditions($tbl, $exec, $gen, $pop, \PDOStatement $stmt)
+//    {
+//        
+//    }
+    
+    /**
+     * @param \Rawebone\Ormish\Table $tbl
+     * @param \Rawebone\Ormish\Entity $ent
+     * @param \Rawebone\Ormish\Executor $exec
+     * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
+     * @param \Rawebone\Ormish\Populator $pop
+     */
+//    function it_should_find_one_with_conditions($tbl, $exec, $gen, $pop, \PDOStatement $stmt)
+//    {
+//        
+//    }
 }
