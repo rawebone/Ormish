@@ -111,4 +111,14 @@ class Factory
     {
         $this->pop = $pop;
     }
+
+    /**
+     * Sets the name of the class that should be used to Execute queries.
+     * 
+     * @param string $class
+     */
+    public function setExecutorName($class)
+    {
+        $this->execClass = $class;
+    }
 }
