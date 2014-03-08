@@ -2,6 +2,7 @@
 
 namespace spec\Rawebone\Ormish;
 
+use Rawebone\Ormish\SqlGeneratorInterface;
 use Psr\Log\LoggerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -32,5 +33,11 @@ class FactorySpec extends ObjectBehavior
     {
         $this->setLogger($log);
         $this->logger()->shouldBe($log);
+    }
+    
+    function it_should_use_a_custom_generator(SqlGeneratorInterface $gen)
+    {
+        $this->setGenerator($gen);
+        $this->generator()->shouldBe($gen);
     }
 }

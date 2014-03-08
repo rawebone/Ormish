@@ -12,6 +12,7 @@ class Factory
     protected $password;
     protected $options;
     protected $log;
+    protected $gen;
 
     public function __construct($dsn, $username, $password, array $options = array())
     {
@@ -20,6 +21,7 @@ class Factory
         $this->password = $password;
         $this->options  = $options;
         $this->log      = new NullLogger();
+        $this->gen      = new GenericSqlGenerator();
     }
 
     /**
@@ -34,6 +36,17 @@ class Factory
     }
 
     /**
+     * Returns the instance of the SQL Generator that will be used in the 
+     * database layer.
+     * 
+     * @return \Rawebone\Ormish\SqlGeneratorInterface
+     */
+    public function generator()
+    {
+        return $this->gen;
+    }
+    
+    /**
      * Returns the configured database layer.
      * 
      * @return \Rawebone\Ormish\Database
@@ -41,10 +54,9 @@ class Factory
     public function build()
     {
         $pdo = new \PDO($this->dsn, $this->username, $this->password, $this->options);
-        $gen = new GenericSqlGenerator();
         $pop = new Populator();
         
-        return new Database(new Executor($pdo, $this->log), $gen, $pop);
+        return new Database(new Executor($pdo, $this->log), $this->gen, $pop);
     }
 
     /**
@@ -55,5 +67,16 @@ class Factory
     public function setLogger(LoggerInterface $log)
     {
         $this->log = $log;
+    }
+
+    /**
+     * Sets the instance of the SQL Generator that will be used in the database 
+     * layer.
+     * 
+     * @param \Psr\Log\LoggerInterface $log
+     */
+    public function setGenerator(SqlGeneratorInterface $gen)
+    {
+        $this->gen = $gen;
     }
 }
