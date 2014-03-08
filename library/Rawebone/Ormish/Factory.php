@@ -13,6 +13,7 @@ class Factory
     protected $options;
     protected $log;
     protected $gen;
+    protected $pop;
 
     public function __construct($dsn, $username, $password, array $options = array())
     {
@@ -20,10 +21,25 @@ class Factory
         $this->username = $username;
         $this->password = $password;
         $this->options  = $options;
-        $this->log      = new NullLogger();
-        $this->gen      = new GenericSqlGenerator();
+        
+        // Default objects.
+        $this->log = new NullLogger();
+        $this->gen = new GenericSqlGenerator();
+        $this->pop = new Populator();
     }
 
+    /**
+     * Returns the configured database layer.
+     * 
+     * @return \Rawebone\Ormish\Database
+     */
+    public function build()
+    {
+        $pdo = new \PDO($this->dsn, $this->username, $this->password, $this->options);
+        
+        return new Database(new Executor($pdo, $this->log), $this->gen, $this->pop);
+    }
+    
     /**
      * Returns the instance of the logger that will be used in the database
      * layer.
@@ -47,18 +63,16 @@ class Factory
     }
     
     /**
-     * Returns the configured database layer.
+     * Returns the instance of the Populator that will be used in the database 
+     * layer.
      * 
-     * @return \Rawebone\Ormish\Database
+     * @return \Rawebone\Ormish\Populator
      */
-    public function build()
+    public function populator()
     {
-        $pdo = new \PDO($this->dsn, $this->username, $this->password, $this->options);
-        $pop = new Populator();
-        
-        return new Database(new Executor($pdo, $this->log), $this->gen, $pop);
+        return $this->pop;
     }
-
+    
     /**
      * Sets the instance of the logger that will be used in the database layer.
      * 
@@ -78,5 +92,16 @@ class Factory
     public function setGenerator(SqlGeneratorInterface $gen)
     {
         $this->gen = $gen;
+    }
+
+    /**
+     * Sets the instance of the Populator that will be used in the database 
+     * layer.
+     * 
+     * @param \Rawebone\Ormish\Populator $pop
+     */
+    public function setPopulator(Populator $pop)
+    {
+        $this->pop = $pop;
     }
 }
