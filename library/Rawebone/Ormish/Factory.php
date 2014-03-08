@@ -14,6 +14,9 @@ class Factory
     protected $log;
     protected $gen;
     protected $pop;
+    protected $objects;
+    protected $execClass;
+    protected $dbClass;
 
     public function __construct($dsn, $username, $password, array $options = array())
     {
@@ -21,11 +24,14 @@ class Factory
         $this->username = $username;
         $this->password = $password;
         $this->options  = $options;
+        $this->objects  = new ObjectCreator();
         
-        // Default objects.
+        // Default, overrideable objects and settings
         $this->log = new NullLogger();
         $this->gen = new GenericSqlGenerator();
         $this->pop = new Populator();
+        $this->dbClass = __NAMESPACE__ . '\Database';
+        $this->execClass = __NAMESPACE__ . '\Executor';
     }
 
     /**
@@ -37,7 +43,8 @@ class Factory
     {
         $pdo = new \PDO($this->dsn, $this->username, $this->password, $this->options);
         
-        return new Database(new Executor($pdo, $this->log), $this->gen, $this->pop);
+        $exec = $this->objects->create($this->execClass, array($pdo, $this->log));
+        return $this->objects->create($this->dbClass, array($exec, $this->gen, $this->pop));
     }
     
     /**
