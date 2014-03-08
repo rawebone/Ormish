@@ -2,6 +2,7 @@
 
 namespace spec\Rawebone\Ormish;
 
+use Psr\Log\LoggerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -25,5 +26,11 @@ class FactorySpec extends ObjectBehavior
     function it_should_build()
     {
         $this->build()->shouldReturnAnInstanceOf('Rawebone\Ormish\Database');
+    }
+    
+    function it_should_use_a_custom_logger(LoggerInterface $log)
+    {
+        $this->setLogger($log);
+        $this->logger()->shouldBe($log);
     }
 }
