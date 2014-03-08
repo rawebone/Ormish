@@ -14,6 +14,7 @@ class Factory
     protected $log;
     protected $gen;
     protected $pop;
+    protected $em;
     protected $objects;
     protected $execClass;
     protected $dbClass;
@@ -30,6 +31,7 @@ class Factory
         $this->log = new NullLogger();
         $this->gen = new GenericSqlGenerator();
         $this->pop = new Populator();
+        $this->em  = new EntityManager(new DefaultsCreator(), new MetaDataManager(), $this->objects);
         $this->dbClass = __NAMESPACE__ . '\Database';
         $this->execClass = __NAMESPACE__ . '\Executor';
     }
@@ -44,7 +46,7 @@ class Factory
         $pdo = new \PDO($this->dsn, $this->username, $this->password, $this->options);
         
         $exec = $this->objects->create($this->execClass, array($pdo, $this->log));
-        return $this->objects->create($this->dbClass, array($exec, $this->gen, $this->pop));
+        return $this->objects->create($this->dbClass, array($exec, $this->gen, $this->pop, $this->em));
     }
     
     /**

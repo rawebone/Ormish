@@ -7,17 +7,20 @@ class Database
     protected $executor;
     protected $generator;
     protected $populator;
+    protected $entityManager;
     
     /**
      * @var \Rawebone\Ormish\GatewayInterface
      */
     protected $tables = array();
 
-    public function __construct(Executor $exec, SqlGeneratorInterface $gen, Populator $pop)
+    public function __construct(Executor $exec, SqlGeneratorInterface $gen, 
+        Populator $pop, EntityManager $em)
     {
         $this->executor = $exec;
         $this->generator = $gen;
         $this->populator = $pop;
+        $this->entityManager = $em;
     }
 
     /**
@@ -41,7 +44,14 @@ class Database
      */
     public function attach(Table $tbl)
     {
-        $gate = new Gateway($this, $tbl, $this->generator, $this->executor, $this->populator);
+        $gate = new Gateway(
+                $this, 
+                $tbl, 
+                $this->generator, 
+                $this->executor, 
+                $this->populator,
+                $this->entityManager
+        );
         $this->tables[$tbl->table()] = $gate;
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace spec\Rawebone\Ormish;
 
+use Rawebone\Ormish\EntityManager;
 use Rawebone\Ormish\Executor;
 use Rawebone\Ormish\Populator;
 use Rawebone\Ormish\SqlGeneratorInterface;
@@ -14,9 +15,9 @@ use Prophecy\Argument;
 class GatewaySpec extends ObjectBehavior
 {
     function let(Database $db, Table $tbl, Executor $exec, Populator $pop, 
-        SqlGeneratorInterface $gen, Entity $ent)
+        SqlGeneratorInterface $gen, Entity $ent, EntityManager $em)
     {
-        $this->beConstructedWith($db, $tbl, $gen, $exec, $pop);
+        $this->beConstructedWith($db, $tbl, $gen, $exec, $pop, $em);
     }
     
     function it_is_initializable()
@@ -24,12 +25,21 @@ class GatewaySpec extends ObjectBehavior
         $this->shouldHaveType('Rawebone\Ormish\Gateway');
     }
     
-    function it_should_create($tbl)
+    function it_should_create($em, $ent, $tbl, $db)
     {
-        $tbl->model()->willReturn('Rawebone\Ormish\Entity');
-        $tbl->id()->willReturn("id");
-        $tbl->readOnly()->willReturn(false);
-        $this->create()->shouldReturnAnInstanceOf('Rawebone\Ormish\Entity');
+        $entity = 'Rawebone\Ormish\Entity';
+        $id = "id";
+        $readOnly = false;
+        
+        $tbl->model()->willReturn($entity);
+        $tbl->id()->willReturn($id);
+        $tbl->readOnly()->willReturn($readOnly);
+        
+        $em->create($entity, $id, array())->willReturn($ent);
+        $em->prepare($ent, Argument::type('Rawebone\Ormish\Gateway'), $db, $readOnly)
+           ->willReturn(true);
+        
+        $this->create()->shouldReturn(true);
     }
     
     function it_should_not_attempt_save_or_delete_if_read_only($tbl, $ent)
@@ -121,7 +131,7 @@ class GatewaySpec extends ObjectBehavior
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
      * @param \Rawebone\Ormish\Populator $pop
      */
-    function it_should_find($tbl, $exec, $gen, $pop, \PDOStatement $stmt, $ent)
+    function it_should_find($tbl, $exec, $gen, $pop, \PDOStatement $stmt, $ent, $em, $db)
     {
         $tbl->model()->willReturn('Rawebone\Ormish\Entity');
         $tbl->readOnly()->willReturn(true);
@@ -137,10 +147,8 @@ class GatewaySpec extends ObjectBehavior
         $pop->populate($stmt, 'Rawebone\Ormish\Entity')->willReturn(array());
         $this->find(1)->shouldReturn(null);
         
-        $ent->all()->willReturn(array());
-        $ent->letDatabase(Argument::any())->shouldBeCalled();
-        $ent->letShadow(Argument::any())->shouldBeCalled();
-        $ent->letGateway(Argument::any())->shouldBeCalled();
+        $em->prepare($ent, Argument::type('Rawebone\Ormish\Gateway'), $db, true)
+           ->shouldBeCalled();
         
         $pop->populate($stmt, 'Rawebone\Ormish\Entity')->willReturn(array($ent));
         $this->find(1)->shouldReturn($ent);

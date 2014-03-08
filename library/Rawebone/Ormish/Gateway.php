@@ -9,33 +9,28 @@ class Gateway implements GatewayInterface
     protected $generator;
     protected $executor;
     protected $populator;
-    protected $meta;
-    protected $defaults;
+    protected $entityManager;
     
     public function __construct(Database $db, Table $tbl, 
-        SqlGeneratorInterface $gen, Executor $exec, Populator $pop)
+        SqlGeneratorInterface $gen, Executor $exec, Populator $pop, EntityManager $em)
     {
         $this->database = $db;
         $this->table = $tbl;
         $this->generator = $gen;
         $this->executor = $exec;
         $this->populator = $pop;
-        
-        $this->meta = new MetaDataManager();
-        $this->defaults = new DefaultsCreator();
+        $this->entityManager = $em;
     }
 
     public function create(array $initial = array())
     {
         $name = $this->table->model();
-        $defaults = $this->defaults->make($this->meta->metadata($name));
-
+        $id   = $this->table->id();
+        $ro   = $this->table->readOnly();
+        $em   = $this->entityManager;
+        $db   = $this->database;
         
-        if (isset($defaults[$this->table->id()])) { // Ensure we can save properly
-            $defaults[$this->table->id()] = null;
-        }
-        
-        return $this->prepareEntity(new $name(array_merge($defaults, $initial)));
+        return $em->prepare($em->create($name, $id, $initial), $this, $db, $ro); 
     }
 
     public function delete(Entity $entity)
@@ -65,7 +60,14 @@ class Gateway implements GatewayInterface
         if (!isset($ents[0])) {
             return null;
         } else {
-            return $this->prepareEntity($ents[0]);
+            $ent = $ents[0];
+            $this->entityManager->prepare(
+                    $ent, 
+                    $this, 
+                    $this->database, 
+                    $this->table->readOnly()
+            );
+            return $ent;
         }
     }
 
@@ -93,7 +95,7 @@ class Gateway implements GatewayInterface
         
         $rows = $this->populator->populate($stmt, $this->table->model());
         foreach ($rows as $row) {
-            $this->prepareEntity($row);
+            $this->entityManager->prepare($row, $this, $this->database, $this->table->readOnly());
         }
         
         return $rows;
@@ -128,23 +130,5 @@ class Gateway implements GatewayInterface
         $id = $this->table->id();
         list($query, $params) = $this->generator->update($this->table->table(), $entity->all(), $id, $entity->$id);
         return $this->executor->exec($query, $params);
-    }
-    
-    /**
-     * Prepares an entity for use in the system.
-     * 
-     * @param \Rawebone\Ormish\Entity $entity
-     * @return \Rawebone\Ormish\Entity
-     */
-    protected function prepareEntity(Entity $entity)
-    {
-        $shadow = $this->table->readOnly() ? new NullShadow() : new Shadow();
-        $shadow->update($entity->all());
-        
-        $entity->letDatabase($this->database);
-        $entity->letShadow($shadow);
-        $entity->letGateway($this);
-        
-        return $entity;
     }
 }

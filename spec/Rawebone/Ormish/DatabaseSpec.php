@@ -2,6 +2,7 @@
 
 namespace spec\Rawebone\Ormish;
 
+use Rawebone\Ormish\EntityManager;
 use Rawebone\Ormish\Executor;
 use Rawebone\Ormish\Populator;
 use Rawebone\Ormish\SqlGeneratorInterface;
@@ -11,9 +12,10 @@ use Prophecy\Argument;
 
 class DatabaseSpec extends ObjectBehavior
 {
-    function let(Executor $exec, Populator $pop, SqlGeneratorInterface $gen)
+    function let(Executor $exec, Populator $pop, SqlGeneratorInterface $gen, 
+        EntityManager $em)
     {
-        $this->beConstructedWith($exec, $gen, $pop);
+        $this->beConstructedWith($exec, $gen, $pop, $em);
     }
     
     function it_is_initializable()
