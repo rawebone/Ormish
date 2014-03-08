@@ -66,6 +66,14 @@ class EntityManager
         $entity->letGateway($gateway);
     }
 
+    /**
+     * Creates an instance of an Entity.
+     * 
+     * @param string $name
+     * @param string $idField
+     * @param array $initial
+     * @return \Rawebone\Ormish\Entity
+     */
     public function create($name, $idField, array $initial)
     {
         $data = array_merge($this->defaults($name), $initial);
