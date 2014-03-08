@@ -48,9 +48,15 @@ class FactorySpec extends ObjectBehavior
         $this->populator()->shouldBe($pop);
     }
     
-    function it_should_use_a_custom_executor()
+    function it_should_use_a_custom_executor_class()
     {
         $this->setExecutorName('Non\ExistantClass');
+        $this->shouldThrow('ReflectionException')->during("build");
+    }
+    
+    function it_should_use_a_custom_database_class()
+    {
+        $this->setDatabaseName('Non\ExistantClass');
         $this->shouldThrow('ReflectionException')->during("build");
     }
 }

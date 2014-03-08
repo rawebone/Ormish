@@ -121,4 +121,15 @@ class Factory
     {
         $this->execClass = $class;
     }
+
+    /**
+     * Sets the name of the Database class that should be returned by the
+     * factory.
+     * 
+     * @param string $class
+     */
+    public function setDatabaseName($class)
+    {
+        $this->dbClass = $class;
+    }
 }
