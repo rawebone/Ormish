@@ -37,9 +37,9 @@ class GatewaySpec extends ObjectBehavior
         
         $em->create($entity, $id, array())->willReturn($ent);
         $em->prepare($ent, Argument::type('Rawebone\Ormish\Gateway'), $db, $readOnly)
-           ->willReturn(true);
+           ->shouldBeCalled();
         
-        $this->create()->shouldReturn(true);
+        $this->create()->shouldReturn($ent);
     }
     
     function it_should_not_attempt_save_or_delete_if_read_only($tbl, $ent)

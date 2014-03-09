@@ -29,8 +29,11 @@ class Gateway implements GatewayInterface
         $ro   = $this->table->readOnly();
         $em   = $this->entityManager;
         $db   = $this->database;
-        
-        return $em->prepare($em->create($name, $id, $initial), $this, $db, $ro); 
+
+        $ent = $em->create($name, $id, $initial);
+        $em->prepare($ent, $this, $db, $ro);
+
+        return $ent;
     }
 
     public function delete(Entity $entity)
