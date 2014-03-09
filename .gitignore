@@ -215,6 +215,5 @@ pip-log.txt
 .mr.developer.cfg
 /design.php
 /vendor/
-/composer.lock
 /nbproject/
 /.idea/
