@@ -13,6 +13,7 @@ class ExecutorSpec extends ObjectBehavior
     function let(PDO $pdo, LoggerInterface $log, PDOStatement $stmt)
     {
         $this->beConstructedWith($pdo, $log);
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION)->shouldBeCalled();
     }
     
     function it_is_initializable()
@@ -44,7 +45,7 @@ class ExecutorSpec extends ObjectBehavior
         
         $pdo->prepare($query)->willReturn($stmt);
         $pdo->errorInfo()->willReturn(array("ABC12", 1, "Message"));
-        $stmt->execute($params)->willReturn(false);
+        $stmt->execute($params)->willThrow('\PDOException');
         
         $log->error("Failed Query: SELECT * FROM whatever [Params: ]; Error: ABC12 Message (1)")
             ->shouldBeCalled();
@@ -78,7 +79,7 @@ class ExecutorSpec extends ObjectBehavior
         
         $pdo->prepare($query)->willReturn($stmt);
         $pdo->errorInfo()->willReturn(array("ABC12", 1, "Message"));
-        $stmt->execute($params)->willReturn(false);
+        $stmt->execute($params)->willThrow('PDOException');
         
         $log->error("Failed Query: INSERT INTO boot () VALUES() [Params: ]; Error: ABC12 Message (1)")
             ->shouldBeCalled();

@@ -18,6 +18,10 @@ class Executor
     {
         $this->pdo = $pdo;
         $this->log = $log;
+
+        // Ensure that the connection is set to throw Exceptions as we will need this
+        // when handling statement execution.
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
     /**
@@ -107,16 +111,17 @@ class Executor
      */
     protected function handle($query, array $params)
     {
-        $stmt = $this->pdo->prepare($query);
-        
-        if ($stmt->execute($params)) {
+        try {
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute($params);
             $this->log->info("Successful Query: $query [Params: {$this->buildParamString($params)}]");
-        } else {
+            return $stmt;
+        } catch (\PDOException $ex) {
             $error = $this->buildError($query, $params);
             $this->logError($error);
             return $error;
         }
-        
+
         return $stmt;
     }
     
