@@ -10,7 +10,7 @@ interface GatewayInterface
      * Creates the gateway.
      */
     function __construct(Database $db, Table $tbl, SqlGeneratorInterface $gen, 
-        Executor $exec, Populator $pop, EntityManager $em);
+        Executor $exec, Populater $pop, EntityManager $em);
     
     /**
      * Finds a record on the gateway by $id.

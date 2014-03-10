@@ -5,11 +5,11 @@ namespace spec\Rawebone\Ormish;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class PopulatorSpec extends ObjectBehavior
+class PopulaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Rawebone\Ormish\Populator');
+        $this->shouldHaveType('Rawebone\Ormish\Populater');
     }
     
     function it_should_populate(\PDOStatement $stmt)

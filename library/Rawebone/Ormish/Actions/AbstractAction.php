@@ -7,7 +7,7 @@ use Rawebone\Ormish\GatewayInterface;
 use Rawebone\Ormish\Database;
 use Rawebone\Ormish\Table;
 use Rawebone\Ormish\Executor;
-use Rawebone\Ormish\Populator;
+use Rawebone\Ormish\Populater;
 use Rawebone\Ormish\SqlGeneratorInterface;
 
 /**
@@ -51,9 +51,9 @@ abstract class AbstractAction
     protected $executor;
     
     /**
-     * The Populator this action is connection to.
+     * The Populater this action is connection to.
      *
-     * @var \Rawebone\Ormish\Populator
+     * @var \Rawebone\Ormish\Populater
      */
     protected $populator;
     
@@ -65,7 +65,7 @@ abstract class AbstractAction
     protected $generator;
     
     public function __construct(Database $db, GatewayInterface $gw, EntityManager $em,
-        Table $tbl, Executor $ex, Populator $pop, SqlGeneratorInterface $gen)
+        Table $tbl, Executor $ex, Populater $pop, SqlGeneratorInterface $gen)
     {
         $this->database = $db;
         $this->gateway = $gw;

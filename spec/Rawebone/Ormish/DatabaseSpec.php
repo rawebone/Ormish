@@ -4,7 +4,7 @@ namespace spec\Rawebone\Ormish;
 
 use Rawebone\Ormish\EntityManager;
 use Rawebone\Ormish\Executor;
-use Rawebone\Ormish\Populator;
+use Rawebone\Ormish\Populater;
 use Rawebone\Ormish\SqlGeneratorInterface;
 use Rawebone\Ormish\Table;
 use PhpSpec\ObjectBehavior;
@@ -12,7 +12,7 @@ use Prophecy\Argument;
 
 class DatabaseSpec extends ObjectBehavior
 {
-    function let(Executor $exec, Populator $pop, SqlGeneratorInterface $gen, 
+    function let(Executor $exec, Populater $pop, SqlGeneratorInterface $gen,
         EntityManager $em)
     {
         $this->beConstructedWith($exec, $gen, $pop, $em);

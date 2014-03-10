@@ -1,7 +1,7 @@
 <?php
 namespace Rawebone\Ormish;
 
-class Populator
+class Populater
 {
     /**
      * Converts a result set to an array of classes.

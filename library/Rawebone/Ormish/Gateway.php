@@ -12,7 +12,7 @@ class Gateway implements GatewayInterface
     protected $entityManager;
     
     public function __construct(Database $db, Table $tbl, 
-        SqlGeneratorInterface $gen, Executor $exec, Populator $pop, EntityManager $em)
+        SqlGeneratorInterface $gen, Executor $exec, Populater $pop, EntityManager $em)
     {
         $this->database = $db;
         $this->table = $tbl;

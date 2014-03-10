@@ -30,7 +30,7 @@ class Factory
         // Default, overrideable objects and settings
         $this->log = new NullLogger();
         $this->gen = new GenericSqlGenerator();
-        $this->pop = new Populator();
+        $this->pop = new Populater();
         $this->em  = new EntityManager(new DefaultsCreator(), new MetaDataManager(), $this->objects);
         $this->dbClass = __NAMESPACE__ . '\Database';
         $this->execClass = __NAMESPACE__ . '\Executor';
@@ -72,12 +72,12 @@ class Factory
     }
     
     /**
-     * Returns the instance of the Populator that will be used in the database 
+     * Returns the instance of the Populater that will be used in the database
      * layer.
      * 
-     * @return \Rawebone\Ormish\Populator
+     * @return \Rawebone\Ormish\Populater
      */
-    public function populator()
+    public function populater()
     {
         return $this->pop;
     }
@@ -104,12 +104,12 @@ class Factory
     }
 
     /**
-     * Sets the instance of the Populator that will be used in the database 
+     * Sets the instance of the Populater that will be used in the database
      * layer.
      * 
-     * @param \Rawebone\Ormish\Populator $pop
+     * @param \Rawebone\Ormish\Populater $pop
      */
-    public function setPopulator(Populator $pop)
+    public function setPopulater(Populater $pop)
     {
         $this->pop = $pop;
     }

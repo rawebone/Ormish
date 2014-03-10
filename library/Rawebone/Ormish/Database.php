@@ -15,7 +15,7 @@ class Database
     protected $tables = array();
 
     public function __construct(Executor $exec, SqlGeneratorInterface $gen, 
-        Populator $pop, EntityManager $em)
+        Populater $pop, EntityManager $em)
     {
         $this->executor = $exec;
         $this->generator = $gen;

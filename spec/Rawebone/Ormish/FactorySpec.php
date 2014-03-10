@@ -2,7 +2,7 @@
 
 namespace spec\Rawebone\Ormish;
 
-use Rawebone\Ormish\Populator;
+use Rawebone\Ormish\Populater;
 use Rawebone\Ormish\SqlGeneratorInterface;
 use Psr\Log\LoggerInterface;
 use PhpSpec\ObjectBehavior;
@@ -42,10 +42,10 @@ class FactorySpec extends ObjectBehavior
         $this->generator()->shouldBe($gen);
     }
     
-    function it_should_use_a_custom_populator(Populator $pop)
+    function it_should_use_a_custom_populater(Populater $pop)
     {
-        $this->setPopulator($pop);
-        $this->populator()->shouldBe($pop);
+        $this->setPopulater($pop);
+        $this->populater()->shouldBe($pop);
     }
     
     function it_should_use_a_custom_executor_class()

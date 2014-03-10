@@ -4,7 +4,7 @@ namespace spec\Rawebone\Ormish;
 
 use Rawebone\Ormish\EntityManager;
 use Rawebone\Ormish\Executor;
-use Rawebone\Ormish\Populator;
+use Rawebone\Ormish\Populater;
 use Rawebone\Ormish\SqlGeneratorInterface;
 use Rawebone\Ormish\Table;
 use Rawebone\Ormish\Database;
@@ -14,7 +14,7 @@ use Prophecy\Argument;
 
 class GatewaySpec extends ObjectBehavior
 {
-    function let(Database $db, Table $tbl, Executor $exec, Populator $pop, 
+    function let(Database $db, Table $tbl, Executor $exec, Populater $pop,
         SqlGeneratorInterface $gen, Entity $ent, EntityManager $em)
     {
         $this->beConstructedWith($db, $tbl, $gen, $exec, $pop, $em);
@@ -129,7 +129,7 @@ class GatewaySpec extends ObjectBehavior
      * @param \Rawebone\Ormish\Entity $ent
      * @param \Rawebone\Ormish\Executor $exec
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
-     * @param \Rawebone\Ormish\Populator $pop
+     * @param \Rawebone\Ormish\Populater $pop
      */
     function it_should_find($tbl, $exec, $gen, $pop, \PDOStatement $stmt, $ent, $em, $db)
     {
@@ -159,7 +159,7 @@ class GatewaySpec extends ObjectBehavior
      * @param \Rawebone\Ormish\Entity $ent
      * @param \Rawebone\Ormish\Executor $exec
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
-     * @param \Rawebone\Ormish\Populator $pop
+     * @param \Rawebone\Ormish\Populater $pop
      */
 //    function it_should_find_with_conditions($tbl, $exec, $gen, $pop, \PDOStatement $stmt)
 //    {
@@ -171,7 +171,7 @@ class GatewaySpec extends ObjectBehavior
      * @param \Rawebone\Ormish\Entity $ent
      * @param \Rawebone\Ormish\Executor $exec
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
-     * @param \Rawebone\Ormish\Populator $pop
+     * @param \Rawebone\Ormish\Populater $pop
      */
 //    function it_should_find_one_with_conditions($tbl, $exec, $gen, $pop, \PDOStatement $stmt)
 //    {
