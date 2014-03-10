@@ -1,6 +1,6 @@
 <?php
 
-namespace Rawebone\Ormish;
+namespace Rawebone\Ormish\Utilities;
 
 /**
  * ObjectCreator handles instantiating objects by name via reflection, 

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Rawebone\Ormish;
+namespace spec\Rawebone\Ormish\Utilities;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ class ObjectCreatorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Rawebone\Ormish\ObjectCreator');
+        $this->shouldHaveType('Rawebone\Ormish\Utilities\ObjectCreator');
     }
     
     function it_should_return_an_instance_by_name()
