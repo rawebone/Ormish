@@ -1,12 +1,27 @@
 # Ormish
 
 Ormish is an Object Relational Mapper with an emphasis on simplicity. It relies
-on a certain amount of extension and adherence to database conventions. It's
+on a certain amount of extension and adherence to database conventions. It
 has one, generic SQL connector at the moment for maximum compatibility.
 
-The library aims to provide an active record pattern to database access.
+The library aims to provide an active record pattern to database access,
+with a basic syntax for general use and an ability to easily extend for your
+own purposes. I am writing this primarily to learn the Domain and for
+my own purposes, unless there is significant interest for other parties.
 
 *Note: This is a work in progress*
+
+## Installation
+
+Installation is via [Composer](https://getcomposer.org):
+
+```json
+{
+    "require": {
+        "rawebone/ormish": "dev-master"
+    }
+}
+```
 
 ## Usage
 
@@ -82,6 +97,49 @@ class Entity extends BaseEntity
 
 There is a little more boilerplate required for this compared to other systems,
 but the payoff is that you have a simple mechanism to keep everything in check.
+
+## Contributing
+
+### Namepsaces
+
+The root namespace `Rawebone\Ormish` is reserved for objects which are directly
+visible to the end user (like Database, Table, Entity) for easy use of the API.
+
+The `Rawbone\Ormish\Actions` namespace is for Actions that can be applied to a
+`Gateway` object (for example: `$table->find(1)` would refer to a `Finder` action).
+The goal is to create small objects containing the logic required for working
+with the database in a clean and simple way.
+
+The `Rawebone\Ormish\Utilities` namespace is for objects which are consumed
+internally in the API and have no outward value to the users. The end user,
+for example, does not need to see the `Shadow` or `NullShadow` objects to
+use the API.
+
+### Roadmap
+
+#### For Version 0.2.0
+
+* Complete implementation of `Actions` and remove this functionality from the
+  `Gateway` object.
+* Complete move of objects into the `Utilities` namespace which have no outward
+  value to end users.
+* Change to an Exception model for errors.
+
+#### For Version 0.3.0
+
+* Implement a type mapping system. This will be breaking as will it require
+  additional annotations on the Entities.
+* Implement `Relationship` handling in a similar fashion to the `Actions`.
+
+### For Version 0.4.0
+
+* Implement caching (hopefully via a PSR) of results
+* Basic schema manipulation
+
+### Testing
+
+All tests are being run with [PhpSpec](http://phpspec.org).
+
 
 ## License
 
