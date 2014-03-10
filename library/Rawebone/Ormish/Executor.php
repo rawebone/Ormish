@@ -4,6 +4,7 @@ namespace Rawebone\Ormish;
 
 use PDO;
 use Psr\Log\LoggerInterface;
+use Rawebone\Ormish\Exceptions\ExecutionException;
 
 /**
  * Executor is a thin wrapper over PDO to provide Error handling, Logging and
@@ -116,13 +117,22 @@ class Executor
             $stmt->execute($params);
             $this->log->info("Successful Query: $query [Params: {$this->buildParamString($params)}]");
             return $stmt;
-        } catch (\PDOException $ex) {
-            $error = $this->buildError($query, $params);
-            $this->logError($error);
-            return $error;
-        }
 
-        return $stmt;
+        } catch (\PDOException $ex) {
+            $info = $this->pdo->errorInfo();
+            $error = new ExecutionException($info[0], "{$info[2]} ({$info[1]})", $query, $params);
+
+            $msg = sprintf(
+                "Failed Query: %s [Params: %s]; Error: %s %s",
+                $query,
+                $this->buildParamString($params),
+                $error->getSqlState(),
+                $error->getErrorMsg()
+            );
+
+            $this->log->error($msg);
+            throw $error; // Throw for higher level handling
+        }
     }
     
     /**

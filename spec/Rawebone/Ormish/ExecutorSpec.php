@@ -45,17 +45,12 @@ class ExecutorSpec extends ObjectBehavior
         
         $pdo->prepare($query)->willReturn($stmt);
         $pdo->errorInfo()->willReturn(array("ABC12", 1, "Message"));
-        $stmt->execute($params)->willThrow('\PDOException');
+        $stmt->execute($params)->willThrow('PDOException');
         
         $log->error("Failed Query: SELECT * FROM whatever [Params: ]; Error: ABC12 Message (1)")
             ->shouldBeCalled();
-        
-        $err = $this->query($query, $params);
-        $err->shouldReturnAnInstanceOf('Rawebone\Ormish\Error');
-        $err->code()->shouldReturn("ABC12");
-        $err->message()->shouldReturn("Message (1)");
-        $err->query()->shouldReturn("SELECT * FROM whatever");
-        $err->params()->shouldReturn(array());
+
+        $this->shouldThrow('Rawebone\Ormish\Exceptions\ExecutionException')->during('query', array($query, $params));
     }
     
     function it_should_execute_a_statement($pdo, $log, $stmt)
@@ -76,20 +71,16 @@ class ExecutorSpec extends ObjectBehavior
     {
         $query  = "INSERT INTO boot () VALUES()";
         $params = array();
-        
+
         $pdo->prepare($query)->willReturn($stmt);
         $pdo->errorInfo()->willReturn(array("ABC12", 1, "Message"));
+
         $stmt->execute($params)->willThrow('PDOException');
-        
+
         $log->error("Failed Query: INSERT INTO boot () VALUES() [Params: ]; Error: ABC12 Message (1)")
             ->shouldBeCalled();
-        
-        $err = $this->exec($query, $params);
-        $err->shouldBeAnInstanceOf('Rawebone\Ormish\Error');
-        $err->code()->shouldReturn("ABC12");
-        $err->message()->shouldReturn("Message (1)");
-        $err->query()->shouldReturn("INSERT INTO boot () VALUES()");
-        $err->params()->shouldReturn(array());
+
+        $this->shouldThrow('Rawebone\Ormish\Exceptions\ExecutionException')->during('exec', array($query, $params));
     }
     
     function it_should_return_a_pdo_object()
