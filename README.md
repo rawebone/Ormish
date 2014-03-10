@@ -100,7 +100,7 @@ but the payoff is that you have a simple mechanism to keep everything in check.
 
 ## Contributing
 
-### Namepsaces
+### Namespaces
 
 The root namespace `Rawebone\Ormish` is reserved for objects which are directly
 visible to the end user (like Database, Table, Entity) for easy use of the API.
@@ -129,11 +129,13 @@ use the API.
 
 * Implement a type mapping system. This will be breaking as will it require
   additional annotations on the Entities.
+* Implement annotations for Tables and deprecate attaching tables manually. This
+  will help keep the Entities close to the database.
 * Implement `Relationship` handling in a similar fashion to the `Actions`.
 
 ### For Version 0.4.0
 
-* Implement caching (hopefully via a PSR) of results
+* Implement caching (hopefully via a PSR) of results and possibly configuration
 * Basic schema manipulation
 
 ### Testing
