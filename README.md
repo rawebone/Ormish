@@ -122,8 +122,8 @@ use the API.
 * Complete implementation of `Actions` and remove this functionality from the
   `Gateway` object.
 * Complete move of objects into the `Utilities` namespace which have no outward
-  value to end users.
-* Change to an Exception model for errors.
+  value to end users. (70%)
+* Change to an Exception model for errors. (90%)
 
 #### For Version 0.3.0
 
