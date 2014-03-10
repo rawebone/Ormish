@@ -2,7 +2,7 @@
 
 namespace spec\Rawebone\Ormish\Actions;
 
-use Rawebone\Ormish\EntityManager;
+use Rawebone\Ormish\Utilities\EntityManager;
 use Rawebone\Ormish\GatewayInterface;
 use Rawebone\Ormish\Database;
 use Rawebone\Ormish\Executor;

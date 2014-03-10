@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Rawebone\Ormish;
+namespace spec\Rawebone\Ormish\Utilities;
 
 use Rawebone\Ormish\Entity;
 use Rawebone\Ormish\Database;
@@ -20,7 +20,7 @@ class EntityManagerSpec extends ObjectBehavior
     
     function it_is_initializable()
     {
-        $this->shouldHaveType('Rawebone\Ormish\EntityManager');
+        $this->shouldHaveType('Rawebone\Ormish\Utilities\EntityManager');
     }
     
     function it_should_return_metadata($mdm)
@@ -45,7 +45,7 @@ class EntityManagerSpec extends ObjectBehavior
         $ent->all()->willReturn(array())->shouldBeCalled();
         $ent->letDatabase($db)->shouldBeCalled();
         $ent->letGateway($gate)->shouldBeCalled();
-        $ent->letShadow(Argument::type('Rawebone\Ormish\NullShadow'))->shouldBeCalled();
+        $ent->letShadow(Argument::type('Rawebone\Ormish\Utilities\NullShadow'))->shouldBeCalled();
         
         $this->prepare($ent, $gate, $db, $readOnly);
     }
@@ -58,7 +58,7 @@ class EntityManagerSpec extends ObjectBehavior
         $ent->all()->willReturn(array())->shouldBeCalled();
         $ent->letDatabase($db)->shouldBeCalled();
         $ent->letGateway($gate)->shouldBeCalled();
-        $ent->letShadow(Argument::type('Rawebone\Ormish\Shadow'))->shouldBeCalled();
+        $ent->letShadow(Argument::type('Rawebone\Ormish\Utilities\Shadow'))->shouldBeCalled();
         
         $this->prepare($ent, $gate, $db, $readOnly);
     }

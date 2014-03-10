@@ -2,6 +2,8 @@
 
 namespace Rawebone\Ormish;
 
+use Rawebone\Ormish\Utilities\EntityManager;
+
 class Database
 {
     protected $executor;

@@ -1,5 +1,8 @@
 <?php
+
 namespace Rawebone\Ormish;
+
+use Rawebone\Ormish\Utilities\EntityManager;
 
 /**
  * Provides an abstraction between a model and a database.

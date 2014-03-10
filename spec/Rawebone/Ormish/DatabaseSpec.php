@@ -2,7 +2,7 @@
 
 namespace spec\Rawebone\Ormish;
 
-use Rawebone\Ormish\EntityManager;
+use Rawebone\Ormish\Utilities\EntityManager;
 use Rawebone\Ormish\Executor;
 use Rawebone\Ormish\Populater;
 use Rawebone\Ormish\SqlGeneratorInterface;

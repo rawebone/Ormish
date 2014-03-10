@@ -1,6 +1,6 @@
 <?php
 
-namespace Rawebone\Ormish;
+namespace Rawebone\Ormish\Utilities;
 
 /**
  * NullShadow provides an interface consistent with Shadow but which will never

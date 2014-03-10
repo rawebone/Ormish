@@ -2,6 +2,8 @@
 
 namespace Rawebone\Ormish;
 
+use Rawebone\Ormish\Utilities\EntityManager;
+
 class Gateway implements GatewayInterface
 {
     protected $database;

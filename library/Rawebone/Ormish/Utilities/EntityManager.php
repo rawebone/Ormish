@@ -1,10 +1,10 @@
 <?php
 
-namespace Rawebone\Ormish;
+namespace Rawebone\Ormish\Utilities;
 
-use Rawebone\Ormish\Utilities\DefaultsCreator;
-use Rawebone\Ormish\Utilities\MetaDataManager;
-use Rawebone\Ormish\Utilities\ObjectCreator;
+use Rawebone\Ormish\Entity;
+use Rawebone\Ormish\Database;
+use Rawebone\Ormish\GatewayInterface;
 
 /**
  * Provides a wrapper over the Entity management tools in the library, allowing

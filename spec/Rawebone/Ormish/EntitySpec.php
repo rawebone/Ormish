@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Rawebone\Ormish;
+namespace spec\Rawebone\Ormish\Utilities;
 
 use Rawebone\Ormish\Database;
 use Rawebone\Ormish\GatewayInterface;
-use Rawebone\Ormish\Shadow;
+use Rawebone\Ormish\Utilities\Shadow;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

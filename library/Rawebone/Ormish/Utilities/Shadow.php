@@ -1,6 +1,6 @@
 <?php
 
-namespace Rawebone\Ormish;
+namespace Rawebone\Ormish\Utilities;
 
 /**
  * Shadows are used to record and compute changes in state in Entities.

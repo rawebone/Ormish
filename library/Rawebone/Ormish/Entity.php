@@ -2,6 +2,8 @@
 
 namespace Rawebone\Ormish;
 
+use Rawebone\Ormish\Utilities\Shadow;
+
 /**
  * Entity is the core of Ormish, providing a simplistic interface for creating
  * smart Domain Objects.

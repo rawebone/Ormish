@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Rawebone\Ormish\Utilities\DefaultsCreator;
 use Rawebone\Ormish\Utilities\MetaDataManager;
 use Rawebone\Ormish\Utilities\ObjectCreator;
+use Rawebone\Ormish\Utilities\EntityManager;
 
 class Factory
 {

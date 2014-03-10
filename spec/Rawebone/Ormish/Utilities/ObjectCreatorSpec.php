@@ -14,8 +14,8 @@ class ObjectCreatorSpec extends ObjectBehavior
     
     function it_should_return_an_instance_by_name()
     {
-        $this->create('Rawebone\Ormish\NullShadow', array())
-             ->shouldReturnAnInstanceOf('Rawebone\Ormish\NullShadow');
+        $this->create('Rawebone\Ormish\Utilities\NullShadow', array())
+             ->shouldReturnAnInstanceOf('Rawebone\Ormish\Utilities\NullShadow');
     }
     
     function it_should_throw_a_reflection_exception_if_invalid_name_passed()

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Rawebone\Ormish;
+namespace spec\Rawebone\Ormish\Utilities;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ class ShadowSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Rawebone\Ormish\Shadow');
+        $this->shouldHaveType('Rawebone\Ormish\Utilities\Shadow');
     }
     
     function it_should_update()

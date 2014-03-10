@@ -2,7 +2,7 @@
 
 namespace Rawebone\Ormish\Actions;
 
-use Rawebone\Ormish\EntityManager;
+use Rawebone\Ormish\Utilities\EntityManager;
 use Rawebone\Ormish\GatewayInterface;
 use Rawebone\Ormish\Database;
 use Rawebone\Ormish\Table;
@@ -32,7 +32,7 @@ abstract class AbstractAction
     /**
      * The Entity Manager this action is connected to.
      *
-     * @var \Rawebone\Ormish\EntityManager
+     * @var \Rawebone\Ormish\Utilities\EntityManager
      */
     protected $entityManager;
     
