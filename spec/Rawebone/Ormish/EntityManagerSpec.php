@@ -5,7 +5,7 @@ namespace spec\Rawebone\Ormish;
 use Rawebone\Ormish\Entity;
 use Rawebone\Ormish\Database;
 use Rawebone\Ormish\GatewayInterface;
-use Rawebone\Ormish\DefaultsCreator;
+use Rawebone\Ormish\Utilities\DefaultsCreator;
 use Rawebone\Ormish\MetaDataManager;
 use Rawebone\Ormish\ObjectCreator;
 use PhpSpec\ObjectBehavior;

@@ -2,6 +2,8 @@
 
 namespace Rawebone\Ormish;
 
+use Rawebone\Ormish\Utilities\DefaultsCreator;
+
 /**
  * Provides a wrapper over the Entity management tools in the library, allowing
  * for easier access to data and caching.
