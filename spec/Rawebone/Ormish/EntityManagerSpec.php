@@ -6,7 +6,7 @@ use Rawebone\Ormish\Entity;
 use Rawebone\Ormish\Database;
 use Rawebone\Ormish\GatewayInterface;
 use Rawebone\Ormish\Utilities\DefaultsCreator;
-use Rawebone\Ormish\MetaDataManager;
+use Rawebone\Ormish\Utilities\MetaDataManager;
 use Rawebone\Ormish\ObjectCreator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

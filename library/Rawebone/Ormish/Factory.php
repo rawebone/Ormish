@@ -5,6 +5,7 @@ namespace Rawebone\Ormish;
 use Psr\Log\NullLogger;
 use Psr\Log\LoggerInterface;
 use Rawebone\Ormish\Utilities\DefaultsCreator;
+use Rawebone\Ormish\Utilities\MetaDataManager;
 
 class Factory
 {

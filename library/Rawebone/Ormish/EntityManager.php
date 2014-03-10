@@ -3,6 +3,7 @@
 namespace Rawebone\Ormish;
 
 use Rawebone\Ormish\Utilities\DefaultsCreator;
+use Rawebone\Ormish\Utilities\MetaDataManager;
 
 /**
  * Provides a wrapper over the Entity management tools in the library, allowing

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rawebone\Ormish;
+namespace Rawebone\Ormish\Utilities;
 
 use phpDocumentor\Reflection\DocBlock;
 
