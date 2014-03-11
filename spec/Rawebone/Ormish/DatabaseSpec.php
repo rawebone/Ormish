@@ -39,7 +39,7 @@ class DatabaseSpec extends ObjectBehavior
     
     function it_should_throw_an_exception_when_getting_invalid_table()
     {
-        $this->shouldThrow('Rawebone\Ormish\InvalidTableException')
+        $this->shouldThrow('Rawebone\Ormish\Exceptions\InvalidTableException')
              ->during("get", array("invalid"));
     }
 }

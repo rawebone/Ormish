@@ -1,4 +1,4 @@
 <?php
-namespace Rawebone\Ormish;
+namespace Rawebone\Ormish\Exceptions;
 
 class InvalidTableException extends \Exception { }

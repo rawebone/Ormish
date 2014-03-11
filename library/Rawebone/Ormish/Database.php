@@ -68,7 +68,7 @@ class Database
     public function get($table)
     {
         if (!isset($this->tables[$table])) {
-            throw new InvalidTableException($table);
+            throw new Exceptions\InvalidTableException($table);
         }
         
         return $this->tables[$table];
