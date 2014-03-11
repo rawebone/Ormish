@@ -4,6 +4,7 @@ namespace Rawebone\Ormish;
 
 use Psr\Log\NullLogger;
 use Psr\Log\LoggerInterface;
+use Rawebone\Ormish\Actions\ActionFactory;
 use Rawebone\Ormish\Utilities\DefaultsCreator;
 use Rawebone\Ormish\Utilities\MetaDataManager;
 use Rawebone\Ormish\Utilities\ObjectCreator;
@@ -51,7 +52,8 @@ class Factory
         $pdo = new \PDO($this->dsn, $this->username, $this->password, $this->options);
         
         $exec = $this->objects->create($this->execClass, array($pdo, $this->log));
-        return $this->objects->create($this->dbClass, array($exec, $this->gen, $this->pop, $this->em));
+        $factory = new ActionFactory($this->em, $exec, $this->pop, $this->gen, $this->objects);
+        return $this->objects->create($this->dbClass, array($exec, $factory));
     }
     
     /**

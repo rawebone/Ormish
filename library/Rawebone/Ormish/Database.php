@@ -4,26 +4,22 @@ namespace Rawebone\Ormish;
 
 use Rawebone\Ormish\Utilities\EntityManager;
 use Rawebone\Ormish\Utilities\Populater;
+use Rawebone\Ormish\Actions\ActionFactory;
 
 class Database
 {
     protected $executor;
-    protected $generator;
-    protected $populator;
-    protected $entityManager;
+    protected $factory;
     
     /**
      * @var \Rawebone\Ormish\GatewayInterface
      */
     protected $tables = array();
 
-    public function __construct(Executor $exec, SqlGeneratorInterface $gen, 
-        Populater $pop, EntityManager $em)
+    public function __construct(Executor $exec, ActionFactory $factory)
     {
         $this->executor = $exec;
-        $this->generator = $gen;
-        $this->populator = $pop;
-        $this->entityManager = $em;
+        $this->factory = $factory;
     }
 
     /**
@@ -50,10 +46,7 @@ class Database
         $gate = new Gateway(
                 $this, 
                 $tbl, 
-                $this->generator, 
-                $this->executor, 
-                $this->populator,
-                $this->entityManager
+                $this->factory
         );
         $this->tables[$tbl->table()] = $gate;
         return $this;
