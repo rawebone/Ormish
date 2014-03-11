@@ -7,7 +7,7 @@ use Rawebone\Ormish\GatewayInterface;
 use Rawebone\Ormish\Database;
 use Rawebone\Ormish\Table;
 use Rawebone\Ormish\Executor;
-use Rawebone\Ormish\Populater;
+use Rawebone\Ormish\Utilities\Populater;
 use Rawebone\Ormish\SqlGeneratorInterface;
 
 /**

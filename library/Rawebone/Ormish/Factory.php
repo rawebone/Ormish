@@ -8,6 +8,7 @@ use Rawebone\Ormish\Utilities\DefaultsCreator;
 use Rawebone\Ormish\Utilities\MetaDataManager;
 use Rawebone\Ormish\Utilities\ObjectCreator;
 use Rawebone\Ormish\Utilities\EntityManager;
+use Rawebone\Ormish\Utilities\Populater;
 
 class Factory
 {
@@ -79,7 +80,7 @@ class Factory
      * Returns the instance of the Populater that will be used in the database
      * layer.
      * 
-     * @return \Rawebone\Ormish\Populater
+     * @return \Rawebone\Ormish\Utilities\Populater
      */
     public function populater()
     {

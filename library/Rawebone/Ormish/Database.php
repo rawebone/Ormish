@@ -3,6 +3,7 @@
 namespace Rawebone\Ormish;
 
 use Rawebone\Ormish\Utilities\EntityManager;
+use Rawebone\Ormish\Utilities\Populater;
 
 class Database
 {

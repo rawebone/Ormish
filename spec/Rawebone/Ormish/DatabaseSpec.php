@@ -4,7 +4,7 @@ namespace spec\Rawebone\Ormish;
 
 use Rawebone\Ormish\Utilities\EntityManager;
 use Rawebone\Ormish\Executor;
-use Rawebone\Ormish\Populater;
+use Rawebone\Ormish\Utilities\Populater;
 use Rawebone\Ormish\SqlGeneratorInterface;
 use Rawebone\Ormish\Table;
 use PhpSpec\ObjectBehavior;

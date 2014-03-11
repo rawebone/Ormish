@@ -2,7 +2,7 @@
 
 namespace spec\Rawebone\Ormish;
 
-use Rawebone\Ormish\Populater;
+use Rawebone\Ormish\Utilities\Populater;
 use Rawebone\Ormish\SqlGeneratorInterface;
 use Psr\Log\LoggerInterface;
 use PhpSpec\ObjectBehavior;

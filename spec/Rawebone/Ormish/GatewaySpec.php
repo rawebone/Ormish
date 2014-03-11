@@ -4,7 +4,7 @@ namespace spec\Rawebone\Ormish;
 
 use Rawebone\Ormish\Utilities\EntityManager;
 use Rawebone\Ormish\Executor;
-use Rawebone\Ormish\Populater;
+use Rawebone\Ormish\Utilities\Populater;
 use Rawebone\Ormish\SqlGeneratorInterface;
 use Rawebone\Ormish\Table;
 use Rawebone\Ormish\Database;
@@ -129,7 +129,7 @@ class GatewaySpec extends ObjectBehavior
      * @param \Rawebone\Ormish\Entity $ent
      * @param \Rawebone\Ormish\Executor $exec
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
-     * @param \Rawebone\Ormish\Populater $pop
+     * @param \Rawebone\Ormish\Utilities\Populater $pop
      */
     function it_should_find($tbl, $exec, $gen, $pop, \PDOStatement $stmt, $ent, $em, $db)
     {
