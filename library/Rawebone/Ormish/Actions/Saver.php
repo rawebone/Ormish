@@ -3,6 +3,7 @@
 namespace Rawebone\Ormish\Actions;
 
 use Rawebone\Ormish\Entity;
+use Rawebone\Ormish\Exceptions\ExecutionException;
 
 /**
  * Saver performs operations to Insert or Update Entities in the database.
@@ -17,27 +18,26 @@ class Saver extends AbstractAction
 
         $id = $this->table->id();
 
-        return $entity->$id === null ? $this->tryInsert($entity) : $this->tryUpdate($entity);
-    }
-
-    protected function tryInsert(Entity $entity)
-    {
-        list($query, $params) = $this->generator->insert($this->table->table(), $entity->all());
-        if ($this->executor->exec($query, $params)) {
-            $id = $this->table->id();
-            $entity->$id = (int)$this->executor->lastInsertId();
+        try {
+            $entity->$id === null ? $this->tryInsert($id, $entity) : $this->tryUpdate($id, $entity);
             return true;
-        } else {
+        } catch (ExecutionException $ex) { // Already logged
             return false;
         }
     }
 
-    protected function tryUpdate(Entity $entity)
+    protected function tryInsert($id, Entity $entity)
     {
-        $id = $this->table->id();
+        list($query, $params) = $this->generator->insert($this->table->table(), $entity->all());
+        $this->executor->exec($query, $params);
 
+        $entity->$id = (int)$this->executor->lastInsertId();
+    }
+
+    protected function tryUpdate($id, Entity $entity)
+    {
         list($query, $params) = $this->generator->update($this->table->table(), $entity->changes(), $id, $entity->$id);
 
-        return $this->executor->exec($query, $params);
+        $this->executor->exec($query, $params);
     }
 }

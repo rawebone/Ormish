@@ -2,6 +2,7 @@
 
 namespace spec\Rawebone\Ormish\Actions;
 
+use Rawebone\Ormish\Exceptions\ExecutionException;
 use Prophecy\Argument;
 
 class SaverSpec extends AbstractActionSpec
@@ -42,6 +43,10 @@ class SaverSpec extends AbstractActionSpec
         $ex->lastInsertId()->willReturn("1");
 
         $this->run($ent)->shouldReturn(true);
+
+        if ($ent->id !== 1) {
+            throw new \Exception();
+        }
     }
 
     /**
@@ -61,7 +66,7 @@ class SaverSpec extends AbstractActionSpec
 
         $gen->insert("table", array())->willReturn(array("query", array()));
 
-        $ex->exec("query", array())->willReturn(false);
+        $ex->exec("query", array())->willThrow(new ExecutionException("", "", "", array()));
 
         $this->run($ent)->shouldReturn(false);
     }
@@ -86,5 +91,28 @@ class SaverSpec extends AbstractActionSpec
         $ex->exec("query", array())->willReturn(true);
 
         $this->run($ent)->shouldReturn(true);
+    }
+
+
+    /**
+     * @param \Rawebone\Ormish\Entity $ent
+     * @param \Rawebone\Ormish\Table $tbl
+     * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
+     * @param \Rawebone\Ormish\Executor $ex
+     */
+    function it_should_try_to_update_and_fail($ent, $tbl, $gen, $ex)
+    {
+        $tbl->readOnly()->willReturn(false);
+        $tbl->id()->willReturn("id");
+        $tbl->table()->willReturn("table");
+
+        $ent->id = 1;
+        $ent->changes()->willReturn(array());
+
+        $gen->update("table", array(), "id", 1)->willReturn(array("query", array()));
+
+        $ex->exec("query", array())->willThrow(new ExecutionException("", "", "", array()));
+
+        $this->run($ent)->shouldReturn(false);
     }
 }
