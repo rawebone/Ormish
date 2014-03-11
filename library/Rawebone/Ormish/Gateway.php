@@ -2,139 +2,70 @@
 
 namespace Rawebone\Ormish;
 
-use Rawebone\Ormish\Utilities\EntityManager;
-use Rawebone\Ormish\Utilities\Populater;
+use Rawebone\Ormish\Actions\ActionFactory;
 
+/**
+ * This acts as a wrapper over the Actions, allowing us to conveniently package
+ * the database handling without having to contain too much logic.
+ */
 class Gateway implements GatewayInterface
 {
     protected $database;
     protected $table;
-    protected $generator;
-    protected $executor;
-    protected $populator;
-    protected $entityManager;
+    protected $factory;
     
-    public function __construct(Database $db, Table $tbl, 
-        SqlGeneratorInterface $gen, Executor $exec, Populater $pop, EntityManager $em)
+    public function __construct(Database $db, Table $tbl, ActionFactory $factory)
     {
         $this->database = $db;
         $this->table = $tbl;
-        $this->generator = $gen;
-        $this->executor = $exec;
-        $this->populator = $pop;
-        $this->entityManager = $em;
+        $this->factory = $factory;
     }
 
     public function create(array $initial = array())
     {
-        $name = $this->table->model();
-        $id   = $this->table->id();
-        $ro   = $this->table->readOnly();
-        $em   = $this->entityManager;
-        $db   = $this->database;
-
-        $ent = $em->create($name, $id, $initial);
-        $em->prepare($ent, $this, $db, $ro);
-
-        return $ent;
+        return $this->getAction("Create")->run($initial);
     }
 
     public function delete(Entity $entity)
     {
-        $tbl = $this->table;
-        if ($tbl->readOnly()) {
-            return false;
-        }
-        
-        $id = $tbl->id();
-        $query = $this->generator->delete($tbl->table(), $id, $tbl->softDelete());
-        
-        return $this->executor->exec($query, array($entity->$id));
+        return $this->getAction("Deleter")->run($entity);
     }
 
     public function find($id)
     {
-        $query = $this->generator->find($this->table->table(), $this->table->id());
-        $stmt  = $this->executor->query($query, array($id));
-        
-        if ($stmt instanceof Error) {
-            return $stmt;
-        }
-        
-        $ents  = $this->populator->populate($stmt, $this->table->model());
-        
-        if (!isset($ents[0])) {
-            return null;
-        } else {
-            $ent = $ents[0];
-            $this->entityManager->prepare(
-                    $ent, 
-                    $this, 
-                    $this->database, 
-                    $this->table->readOnly()
-            );
-            return $ent;
-        }
+        return $this->getAction("Find")->run($id);
     }
 
     public function findOneWhere($conditions)
     {
-        $rows = call_user_func_array(array($this, "findWhere"), func_get_args());
-        if ($rows instanceof Error) {
-            return $rows;
-        }
-        
-        return isset($rows[0]) ? $rows[0] : null;
+        $callback = array($this->getAction("FindOneWhere"), "run");
+        return call_user_func_array($callback, func_get_args());
     }
 
     public function findWhere($condition)
     {
-        $params = func_get_args();
-        array_shift($params); // Clear $condition
-        
-        $query = $this->generator->findWhere($this->table->table(), $condition);
-        $stmt  = $this->executor->query($query, $params);
-        
-        if ($stmt instanceof Error) {
-            return $stmt;
-        }
-        
-        $rows = $this->populator->populate($stmt, $this->table->model());
-        foreach ($rows as $row) {
-            $this->entityManager->prepare($row, $this, $this->database, $this->table->readOnly());
-        }
-        
-        return $rows;
+        $callback = array($this->getAction("FindWhere"), "run");
+        return call_user_func_array($callback, func_get_args());
     }
 
     public function save(Entity $entity)
     {
-        if ($this->table->readOnly()) {
-            return false;
-        }
-        
-        $id = $this->table->id();
-        
-        return ($entity->$id === null ? $this->tryInsert($entity) : $this->tryUpdate($entity));
+        return $this->getAction("Saver")->run($entity);
     }
-    
-    protected function tryInsert(Entity $entity)
+
+    /**
+     * Returns an Action object for use in by the Gateway.
+     *
+     * @param string $name
+     * @return \Rawebone\Ormish\Actions\AbstractAction
+     */
+    protected function getAction($name)
     {
-        $id = $this->table->id();
-        
-        list($query, $params) = $this->generator->insert($this->table->table(), $entity->all());
-        if ($this->executor->exec($query, $params)) {
-            $entity->$id = (int)$this->executor->lastInsertId();
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    protected function tryUpdate(Entity $entity)
-    {
-        $id = $this->table->id();
-        list($query, $params) = $this->generator->update($this->table->table(), $entity->all(), $id, $entity->$id);
-        return $this->executor->exec($query, $params);
+        return $this->factory->create(
+            __NAMESPACE__ . "\\Actions\\$name",
+            $this->database,
+            $this->table,
+            $this
+        );
     }
 }

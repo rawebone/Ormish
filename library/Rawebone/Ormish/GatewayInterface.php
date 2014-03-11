@@ -4,6 +4,7 @@ namespace Rawebone\Ormish;
 
 use Rawebone\Ormish\Utilities\EntityManager;
 use Rawebone\Ormish\Utilities\Populater;
+use Rawebone\Ormish\Actions\ActionFactory;
 
 /**
  * Provides an abstraction between a model and a database.
@@ -13,8 +14,7 @@ interface GatewayInterface
     /**
      * Creates the gateway.
      */
-    function __construct(Database $db, Table $tbl, SqlGeneratorInterface $gen, 
-        Executor $exec, Populater $pop, EntityManager $em);
+    function __construct(Database $db, Table $tbl, ActionFactory $factory);
     
     /**
      * Finds a record on the gateway by $id.
