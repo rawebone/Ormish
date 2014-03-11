@@ -73,7 +73,8 @@ class Executor
      * 
      * @param string $query
      * @param array $params
-     * @return \PDOStatement|\Rawebone\Ormish\Error
+     * @return \PDOStatement
+     * @throws \Rawebone\Ormish\Exceptions\ExecutionException
      */
     public function query($query, array $params)
     {
@@ -85,11 +86,12 @@ class Executor
      * 
      * @param string $query
      * @param array $params
-     * @return true|\Rawebone\Ormish\Error
+     * @return void
+     * @throws \Rawebone\Ormish\Exceptions\ExecutionException
      */
     public function exec($query, array $params)
     {
-        return (($err = $this->handle($query, $params)) instanceof Error ? $err : true);
+        $this->handle($query, $params);
     }
     
     /**
@@ -108,7 +110,8 @@ class Executor
      * 
      * @param string $query
      * @param array $params
-     * @return \PDOStatement|\Rawebone\Ormish\Error
+     * @return \PDOStatement
+     * @throws \Rawebone\Ormish\Exceptions\ExecutionException
      */
     protected function handle($query, array $params)
     {
@@ -133,37 +136,6 @@ class Executor
             $this->log->error($msg);
             throw $error; // Throw for higher level handling
         }
-    }
-    
-    /**
-     * Returns a standardised error for the connection.
-     * 
-     * @param string $query
-     * @param array $params
-     * @return \Rawebone\Ormish\Error
-     */
-    protected function buildError($query, array $params)
-    {
-        $info = $this->pdo->errorInfo();
-        return new Error($info[0], "{$info[2]} ($info[1])", $query, $params);
-    }
-    
-    /**
-     * Converts an Error to a log entry for debugging and maintenance.
-     * 
-     * @param \Rawebone\Ormish\Error $error
-     */
-    protected function logError(Error $error)
-    {
-        $msg = sprintf(
-                "Failed Query: %s [Params: %s]; Error: %s %s", 
-                $error->query(), 
-                $this->buildParamString($error->params()),
-                $error->code(), 
-                $error->message()
-        );
-        
-        $this->log->error($msg);
     }
     
     /**

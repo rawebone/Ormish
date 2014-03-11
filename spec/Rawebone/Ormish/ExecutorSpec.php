@@ -64,7 +64,7 @@ class ExecutorSpec extends ObjectBehavior
         $log->info("Successful Query: INSERT INTO boot () VALUES() [Params: ]")
             ->shouldBeCalled();
         
-        $this->exec($query, $params)->shouldReturn(true);
+        $this->exec($query, $params);
     }
     
     function it_should_fail_to_execute_a_statement($pdo, $log, $stmt)
