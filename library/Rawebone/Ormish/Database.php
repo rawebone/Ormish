@@ -63,7 +63,7 @@ class Database
      * 
      * @param string $table
      * @return \Rawebone\Ormish\GatewayInterface
-     * @throws InvalidTableException
+     * @throws \Rawebone\Ormish\Exceptions\InvalidTableException
      */
     public function get($table)
     {
