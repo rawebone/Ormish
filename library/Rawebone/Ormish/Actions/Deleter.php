@@ -3,6 +3,7 @@
 namespace Rawebone\Ormish\Actions;
 
 use Rawebone\Ormish\Entity;
+use Rawebone\Ormish\Exceptions\ExecutionException;
 
 /**
  * Handles deleting an Entity from the database.
@@ -20,6 +21,12 @@ class Deleter extends AbstractAction
         $tbl  = $this->table->table();
         
         $query = $this->generator->delete($tbl, $id, $soft);
-        return $this->executor->exec($query, array($entity->$id));
+
+        try {
+            $this->executor->exec($query, array($entity->$id));
+            return true;
+        } catch (ExecutionException $ex) { // Already logged
+            return false;
+        }
     }
 }
