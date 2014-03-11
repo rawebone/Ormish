@@ -139,10 +139,10 @@ use the API.
 #### For Version 0.2.0
 
 * Complete implementation of `Actions` and remove this functionality from the
-  `Gateway` object.
+  `Gateway` object. (100%)
 * Complete move of objects into the `Utilities` namespace which have no outward
-  value to end users. (70%)
-* Change to an Exception model for errors. (90%)
+  value to end users. (90%)
+* Change to an Exception model for errors. (100%)
 
 #### For Version 0.3.0
 
