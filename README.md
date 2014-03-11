@@ -98,6 +98,25 @@ class Entity extends BaseEntity
 There is a little more boilerplate required for this compared to other systems,
 but the payoff is that you have a simple mechanism to keep everything in check.
 
+### Transactions
+
+By default, operations on the database are not carried out inside of transactions,
+however one can achieve this by the use of the `Transaction` object:
+
+```php
+
+use Rawebone\Ormish\Transaction;
+
+$tran = new Transaction($orm->getExecutor(), function () use ($entity) {
+    $entity->save();
+    $entity->delete();
+});
+
+$tran->run();
+
+```
+
+
 ## Contributing
 
 ### Namespaces
