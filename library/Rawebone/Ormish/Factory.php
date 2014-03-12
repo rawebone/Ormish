@@ -5,6 +5,7 @@ namespace Rawebone\Ormish;
 use Psr\Log\NullLogger;
 use Psr\Log\LoggerInterface;
 use Rawebone\Ormish\Actions\ActionFactory;
+use Rawebone\Ormish\Utilities\Caster;
 use Rawebone\Ormish\Utilities\DefaultsCreator;
 use Rawebone\Ormish\Utilities\MetaDataManager;
 use Rawebone\Ormish\Utilities\ObjectCreator;
@@ -36,8 +37,8 @@ class Factory
         // Default, overrideable objects and settings
         $this->log = new NullLogger();
         $this->gen = new GenericSqlGenerator();
-        $this->pop = new Populater();
         $this->em  = new EntityManager(new DefaultsCreator(), new MetaDataManager(), $this->objects);
+        $this->pop = new Populater(new Caster(), $this->em);
         $this->dbClass = __NAMESPACE__ . '\Database';
         $this->execClass = __NAMESPACE__ . '\Executor';
     }
@@ -77,18 +78,7 @@ class Factory
     {
         return $this->gen;
     }
-    
-    /**
-     * Returns the instance of the Populater that will be used in the database
-     * layer.
-     * 
-     * @return \Rawebone\Ormish\Utilities\Populater
-     */
-    public function populater()
-    {
-        return $this->pop;
-    }
-    
+
     /**
      * Sets the instance of the logger that will be used in the database layer.
      * 
@@ -108,17 +98,6 @@ class Factory
     public function setGenerator(SqlGeneratorInterface $gen)
     {
         $this->gen = $gen;
-    }
-
-    /**
-     * Sets the instance of the Populater that will be used in the database
-     * layer.
-     * 
-     * @param \Rawebone\Ormish\Populater $pop
-     */
-    public function setPopulater(Populater $pop)
-    {
-        $this->pop = $pop;
     }
 
     /**

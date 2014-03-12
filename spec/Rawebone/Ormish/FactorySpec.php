@@ -41,13 +41,7 @@ class FactorySpec extends ObjectBehavior
         $this->setGenerator($gen);
         $this->generator()->shouldBe($gen);
     }
-    
-    function it_should_use_a_custom_populater(Populater $pop)
-    {
-        $this->setPopulater($pop);
-        $this->populater()->shouldBe($pop);
-    }
-    
+
     function it_should_use_a_custom_executor_class()
     {
         $this->setExecutorName('Non\ExistantClass');
