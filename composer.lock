@@ -3,57 +3,8 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "f5f3ca5f89cef9772dd317b249b568d3",
+    "hash": "0ec52bba052f3de7a991f1801064ac19",
     "packages": [
-        {
-            "name": "phpdocumentor/reflection-docblock",
-            "version": "2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "cfb3ebea556b24df8f8f3745d61478293cb5a166"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/cfb3ebea556b24df8f8f3745d61478293cb5a166",
-                "reference": "cfb3ebea556b24df8f8f3745d61478293cb5a166",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*@stable"
-            },
-            "suggest": {
-                "dflydev/markdown": "1.0.*",
-                "erusev/parsedown": "~0.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "phpDocumentor": [
-                        "src/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mike van Riel",
-                    "email": "mike.vanriel@naenius.com"
-                }
-            ],
-            "time": "2013-12-05 08:16:55"
-        },
         {
             "name": "psr/log",
             "version": "1.0.0",
@@ -133,12 +84,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/phpspec.git",
-                "reference": "9f72dd2ea9f860572b7ce7f229e043e667f34564"
+                "reference": "42ddd6e40da1d7db28b3c2be9b859fcd907579df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/9f72dd2ea9f860572b7ce7f229e043e667f34564",
-                "reference": "9f72dd2ea9f860572b7ce7f229e043e667f34564",
+                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/42ddd6e40da1d7db28b3c2be9b859fcd907579df",
+                "reference": "42ddd6e40da1d7db28b3c2be9b859fcd907579df",
                 "shasum": ""
             },
             "require": {
@@ -198,7 +149,7 @@
                 "testing",
                 "tests"
             ],
-            "time": "2014-03-04 20:57:45"
+            "time": "2014-03-11 17:11:28"
         },
         {
             "name": "phpspec/prophecy",
