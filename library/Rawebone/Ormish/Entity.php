@@ -10,6 +10,14 @@ use Rawebone\Ormish\Utilities\Shadow;
  */
 class Entity
 {
+    /**
+     * @var \Rawebone\Ormish\Database
+     */
+    private static $globalDatabase;
+
+    /**
+     * @var array
+     */
     private $values;
     
     /**
@@ -109,5 +117,34 @@ class Entity
     protected function getDatabase()
     {
         return $this->database;
+    }
+
+    /**
+     * Allows for using the system as per other ORM's.
+     *
+     * @param string $name
+     * @param array $arguments
+     * @return mixed
+     * @throws \ErrorException
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        if (self::$globalDatabase === null) {
+            $msg = "Call to static interface made, global database not registered";
+            throw new \ErrorException($msg);
+        }
+
+        $callable = array(self::$globalDatabase, $name);
+        return call_user_func_array($callable, $arguments);
+    }
+
+    /**
+     * Allows for using the system as per other ORM's.
+     *
+     * @param \Rawebone\Ormish\Database $db
+     */
+    public static function globalDatabase(Database $db)
+    {
+        self::$globalDatabase = $db;
     }
 }
