@@ -23,6 +23,7 @@ class Factory
     protected $pop;
     protected $em;
     protected $objects;
+    protected $caster;
     protected $execClass;
     protected $dbClass;
 
@@ -33,12 +34,13 @@ class Factory
         $this->password = $password;
         $this->options  = $options;
         $this->objects  = new ObjectCreator();
+        $this->caster   = new Caster();
+        $this->em       = new EntityManager(new DefaultsCreator(), new MetaDataManager(), $this->objects);
+        $this->pop      = new Populater($this->caster, $this->em);
         
-        // Default, overrideable objects and settings
+        // Default objects and settings which can be overridden
         $this->log = new NullLogger();
         $this->gen = new GenericSqlGenerator();
-        $this->em  = new EntityManager(new DefaultsCreator(), new MetaDataManager(), $this->objects);
-        $this->pop = new Populater(new Caster(), $this->em);
         $this->dbClass = __NAMESPACE__ . '\Database';
         $this->execClass = __NAMESPACE__ . '\Executor';
     }
