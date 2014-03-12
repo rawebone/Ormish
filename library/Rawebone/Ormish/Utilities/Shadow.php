@@ -50,6 +50,10 @@ class Shadow
      */
     protected function hash($value)
     {
+        if ($value instanceof \DateTime) {
+            return md5((string)$value->getTimestamp());
+        }
+
         return md5((string)$value);
     }
 }
