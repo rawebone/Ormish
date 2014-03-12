@@ -5,6 +5,7 @@ namespace Rawebone\Ormish\Utilities;
 use Rawebone\Ormish\Entity;
 use Rawebone\Ormish\Database;
 use Rawebone\Ormish\GatewayInterface;
+use Rawebone\Ormish\Table;
 
 /**
  * Provides a wrapper over the Entity management tools in the library, allowing
@@ -87,5 +88,22 @@ class EntityManager
         }
         
         return $this->objects->create($name, $data);
+    }
+
+    /**
+     * Returns a Table object based on Entity metadata.
+     *
+     * @param string $name
+     * @return \Rawebone\Ormish\Table
+     */
+    public function table($name)
+    {
+        $settings = $this->mdm->table($name);
+
+        $pk = $settings["primaryKey"] ?: "id";
+        $sd = $settings["softDelete"] ?: false;
+        $ro = $settings["readOnly"] ?: false;
+
+        return new Table($name, $settings["table"], $pk, $sd, $ro);
     }
 }

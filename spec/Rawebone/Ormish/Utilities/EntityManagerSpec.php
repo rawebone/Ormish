@@ -79,4 +79,16 @@ class EntityManagerSpec extends ObjectBehavior
         $objects->create($name, array("id" => null, "a" => "b", "c" => ""))->willReturn(true);
         $this->create($name, $idField, $values)->shouldReturn(true);
     }
+
+    function it_should_return_a_table_for_an_entity($mdm)
+    {
+        $mdm->table("Entity")->willReturn(array(
+            "table" => "my_table",
+            "primaryKey" => "id",
+            "softDelete" => null,
+            "readOnly"   => null
+        ));
+
+        $this->table("Entity")->shouldReturnAnInstanceOf('Rawebone\Ormish\Table');
+    }
 }
