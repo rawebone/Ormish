@@ -50,7 +50,7 @@ class MetaDataManager
      */
     protected function parseDocBlockProperties($comment)
     {
-        static $regex = "#@property (?<type>[a-zA-Z0-9\\\]+) \\$(?<name>[_a-zA-Z0-9]+)#";
+        static $regex = "#@property\s+(?<type>[a-zA-Z0-9\\\]+)\s+\\$(?<name>[_a-zA-Z0-9]+)#";
 
         if (empty($comment)
             || ($count = preg_match_all($regex, $comment, $matches)) === 0) {
@@ -119,7 +119,7 @@ class MetaDataManager
      */
     protected function getValueForTag($name, $comment)
     {
-        $regex = "#@{$name} (?<value>[_a-zA-Z0-9]+)#";
+        $regex = "#@{$name}\s+(?<value>[_a-zA-Z0-9]+)#";
 
         if (preg_match($regex, $comment, $match) == 0) {
             return null;
