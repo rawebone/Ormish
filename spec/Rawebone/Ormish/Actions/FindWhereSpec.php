@@ -24,13 +24,14 @@ class FindWhereSpec extends AbstractActionSpec
      */
     function it_should_find_records($ent, $tbl, $gen, $ex, $pop, $em, $db, $gw, \PDOStatement $stmt)
     {
+        $tbl->id()->willReturn("id");
         $tbl->table()->willReturn("table");
         $tbl->readOnly()->willReturn(true);
         $tbl->model()->willReturn("Entity");
         $gen->findWhere("table", "a = 1")->willReturn("query");
 
         $ex->query("query", array())->willReturn($stmt);
-        $pop->populate($stmt, "Entity")->willReturn(array($ent));
+        $pop->populate($stmt, "Entity", "id")->willReturn(array($ent));
 
         $em->prepare($ent, $gw, $db, true)->shouldBeCalled();
 

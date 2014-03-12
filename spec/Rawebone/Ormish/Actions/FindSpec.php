@@ -32,7 +32,7 @@ class FindSpec extends AbstractActionSpec
         $gen->find("table", "id")->willReturn("query");
         $ex->query("query", array(1))->willReturn($stmt);
 
-        $pop->populate($stmt, "Entity")->willReturn(array($ent));
+        $pop->populate($stmt, "Entity", "id")->willReturn(array($ent));
         $em->prepare($ent, $gw, $db, true)->shouldBeCalled();
 
         $this->run(1)->shouldReturn($ent);
@@ -72,7 +72,7 @@ class FindSpec extends AbstractActionSpec
         $gen->find("table", "id")->willReturn("query");
         $ex->query("query", array(1))->willReturn($stmt);
 
-        $pop->populate($stmt, "Entity")->willReturn(array());
+        $pop->populate($stmt, "Entity", "id")->willReturn(array());
 
         $this->run(1)->shouldReturn(null);
     }

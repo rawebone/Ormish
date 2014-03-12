@@ -19,7 +19,7 @@ class FindWhere extends AbstractAction
             return array();
         }
 
-        $entities = $this->populator->populate($stmt, $this->table->model());
+        $entities = $this->populator->populate($stmt, $this->table->model(), $this->table->id());
         foreach ($entities as $entity) {
             $this->entityManager->prepare(
                 $entity,

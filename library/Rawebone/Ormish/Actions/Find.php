@@ -19,7 +19,7 @@ class Find extends AbstractAction
             return null;
         }
 
-        $entities = $this->populator->populate($stmt, $this->table->model());
+        $entities = $this->populator->populate($stmt, $this->table->model(), $this->table->id());
 
         if (count($entities) !== 1) {
             return null;
