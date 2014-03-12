@@ -30,4 +30,10 @@ class DefaultsCreatorSpec extends ObjectBehavior
         
         $this->make($types)->shouldReturn($expected);
     }
+
+    function it_should_return_default_datetime_object()
+    {
+        $defaults = $this->make(array("dt" => "DateTime"));
+        $defaults["dt"]->shouldBeAnInstanceOf('DateTime');
+    }
 }

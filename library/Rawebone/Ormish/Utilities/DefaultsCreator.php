@@ -8,7 +8,7 @@ class DefaultsCreator
     {
         $map = array();
         foreach ($types as $field => $type) {
-            switch ($field) {
+            switch ($type) {
                 case "int":
                     $value = 0;
                     break;
@@ -18,6 +18,9 @@ class DefaultsCreator
                 case "bool":
                 case "boolean":
                     $value = false;
+                    break;
+                case "DateTime":
+                    $value = new \DateTime();
                     break;
                 default:
                     $value = "";
