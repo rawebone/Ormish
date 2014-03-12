@@ -55,7 +55,7 @@ class Factory
         $pdo = new \PDO($this->dsn, $this->username, $this->password, $this->options);
         
         $exec = $this->objects->create($this->execClass, array($pdo, $this->log));
-        $factory = new ActionFactory($this->em, $exec, $this->pop, $this->gen, $this->objects);
+        $factory = new ActionFactory($this->em, $exec, $this->pop, $this->gen, $this->objects, $this->caster);
         return $this->objects->create($this->dbClass, array($exec, $factory));
     }
     

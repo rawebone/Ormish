@@ -7,6 +7,7 @@ use Rawebone\Ormish\Database;
 use Rawebone\Ormish\GatewayInterface;
 use Rawebone\Ormish\Executor;
 use Rawebone\Ormish\SqlGeneratorInterface;
+use Rawebone\Ormish\Utilities\Caster;
 use Rawebone\Ormish\Utilities\Populater;
 use Rawebone\Ormish\Utilities\ObjectCreator;
 use Rawebone\Ormish\Utilities\EntityManager;
@@ -22,15 +23,17 @@ class ActionFactory
     protected $generator;
     protected $objectCreator;
     protected $populater;
+    protected $caster;
 
     public function __construct(EntityManager $em, Executor $ex, Populater $pop,
-        SqlGeneratorInterface $gen, ObjectCreator $oc)
+        SqlGeneratorInterface $gen, ObjectCreator $oc, Caster $caster)
     {
         $this->entityManager = $em;
         $this->executor = $ex;
         $this->generator = $gen;
         $this->populater = $pop;
         $this->objectCreator = $oc;
+        $this->caster = $caster;
     }
 
     public function create($name, Database $db, Table $tbl, GatewayInterface $gw)
@@ -42,7 +45,8 @@ class ActionFactory
                 $tbl,
                 $this->executor,
                 $this->populater,
-                $this->generator
+                $this->generator,
+                $this->caster
             ));
     }
 }

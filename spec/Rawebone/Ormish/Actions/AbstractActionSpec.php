@@ -2,6 +2,7 @@
 
 namespace spec\Rawebone\Ormish\Actions;
 
+use Rawebone\Ormish\Utilities\Caster;
 use Rawebone\Ormish\Utilities\EntityManager;
 use Rawebone\Ormish\GatewayInterface;
 use Rawebone\Ormish\Database;
@@ -15,8 +16,8 @@ use Prophecy\Argument;
 class AbstractActionSpec extends ObjectBehavior
 {
     function let(EntityManager $em, GatewayInterface $gw, Database $db, 
-        Table $tbl, Executor $ex, Populater $pop, SqlGeneratorInterface $gen)
+        Table $tbl, Executor $ex, Populater $pop, SqlGeneratorInterface $gen, Caster $caster)
     {
-        $this->beConstructedWith($db, $gw, $em, $tbl, $ex, $pop, $gen);
+        $this->beConstructedWith($db, $gw, $em, $tbl, $ex, $pop, $gen, $caster);
     }
 }

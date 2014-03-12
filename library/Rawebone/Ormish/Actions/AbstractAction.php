@@ -2,6 +2,7 @@
 
 namespace Rawebone\Ormish\Actions;
 
+use Rawebone\Ormish\Utilities\Caster;
 use Rawebone\Ormish\Utilities\EntityManager;
 use Rawebone\Ormish\GatewayInterface;
 use Rawebone\Ormish\Database;
@@ -53,7 +54,7 @@ abstract class AbstractAction
     /**
      * The Populater this action is connection to.
      *
-     * @var \Rawebone\Ormish\Populater
+     * @var \Rawebone\Ormish\Utilities\Populater
      */
     protected $populator;
     
@@ -63,9 +64,16 @@ abstract class AbstractAction
      * @var \Rawebone\Ormish\SqlGeneratorInterface
      */
     protected $generator;
-    
+
+    /**
+     * The Caster this action is connection to.
+     *
+     * @var \Rawebone\Ormish\Utilities\Caster
+     */
+    protected $caster;
+
     public function __construct(Database $db, GatewayInterface $gw, EntityManager $em,
-        Table $tbl, Executor $ex, Populater $pop, SqlGeneratorInterface $gen)
+        Table $tbl, Executor $ex, Populater $pop, SqlGeneratorInterface $gen, Caster $caster)
     {
         $this->database = $db;
         $this->gateway = $gw;
@@ -74,5 +82,6 @@ abstract class AbstractAction
         $this->executor = $ex;
         $this->populator = $pop;
         $this->generator = $gen;
+        $this->caster = $caster;
     }
 }
