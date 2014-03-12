@@ -134,7 +134,9 @@ class Entity
             throw new \ErrorException($msg);
         }
 
-        $callable = array(self::$globalDatabase, $name);
+        $gateway = self::$globalDatabase->get(get_called_class());
+
+        $callable = array($gateway, $name);
         return call_user_func_array($callable, $arguments);
     }
 
