@@ -25,13 +25,13 @@ class EntityManagerSpec extends ObjectBehavior
     
     function it_should_return_metadata($mdm)
     {
-        $mdm->metadata("name")->willReturn(1);
-        $this->metadata("name")->shouldReturn(1);
+        $mdm->properties("name")->willReturn(1);
+        $this->properties("name")->shouldReturn(1);
     }
     
     function it_should_return_defaults($defaults, $mdm)
     {
-        $mdm->metadata("name")->willReturn(array());
+        $mdm->properties("name")->willReturn(array());
         $defaults->make(array())->willReturn(1);
         
         $this->defaults("name")->shouldReturn(1);
@@ -69,7 +69,7 @@ class EntityManagerSpec extends ObjectBehavior
         $idField = "id";
         $values  = array("a" => "b");
         
-        $mdm->metadata($name)->willReturn(array());
+        $mdm->properties($name)->willReturn(array());
         $defaults->make(array())->willReturn(array(
             "id" => 0,
             "a" => "",

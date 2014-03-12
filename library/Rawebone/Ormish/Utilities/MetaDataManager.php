@@ -6,26 +6,41 @@ use phpDocumentor\Reflection\DocBlock;
 
 class MetaDataManager
 {
+    protected $docBlockCache = array();
+    protected $propertyCache = array();
     protected $cache = array();
     
-    public function metadata($class)
+    public function properties($class)
     {
-        if (!isset($this->cache[$class])) {
-            $this->addToCache($class);
+        if (!isset($this->propertyCache[$class])) {
+            $this->cacheProperties($class);
         }
         
-        return $this->cache[$class];
+        return $this->propertyCache[$class];
     }
     
-    protected function addToCache($class)
+    protected function cacheProperties($class)
     {
-        $parser = new DocBlock(new \ReflectionClass($class));
+        $parser = $this->getDocBlock($class);
         
         $map = array();
         foreach ($parser->getTagsByName("property") as $tag) {
             $map[str_replace("$", "", $tag->getVariableName())] = $tag->getType();
         }
         
-        $this->cache[$class] = $map;
+        $this->propertyCache[$class] = $map;
+    }
+
+    /**
+     * @param string $class The class name to get the parser for.
+     * @return \phpDocumentor\Reflection\DocBlock
+     */
+    protected function getDocBlock($class)
+    {
+        if (!isset($this->docBlockCache[$class])) {
+            $this->docBlockCache[$class] = new DocBlock(new \ReflectionClass($class));
+        }
+
+        return $this->docBlockCache[$class];
     }
 }

@@ -34,22 +34,22 @@ class EntityManager
     public function defaults($name)
     {
         if (!isset($this->cachedDefaults[$name])) {
-            $this->cachedDefaults[$name] = $this->defaults->make($this->metadata($name));
+            $this->cachedDefaults[$name] = $this->defaults->make($this->properties($name));
         }
         
         return $this->cachedDefaults[$name];
     }
 
     /**
-     * Returns the metadata for an Entity.
+     * Returns a list of properties from the MetaData on an Entity.
      * 
      * @param string $name
      * @return array
      */
-    public function metadata($name)
+    public function properties($name)
     {
         // MetaDataManager already caches this information.
-        return $this->mdm->metadata($name);
+        return $this->mdm->properties($name);
     }
 
     /**

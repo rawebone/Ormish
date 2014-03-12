@@ -17,6 +17,6 @@ class MetaDataManagerSpec extends ObjectBehavior
     
     function it_should_return_an_array_of_names_to_types()
     {
-        $this->metadata(__CLASS__)->shouldReturn(array("test" => "int"));
+        $this->properties(__CLASS__)->shouldReturn(array("test" => "int"));
     }
 }
