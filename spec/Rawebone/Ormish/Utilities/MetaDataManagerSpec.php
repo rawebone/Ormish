@@ -7,6 +7,7 @@ use Prophecy\Argument;
 
 /**
  * @property int $test This is a test var to make sure the manager behaves correctly
+ * @property \DateTime $testDate This is a test var to make sure the manager behaves correctly
  */
 class MetaDataManagerSpec extends ObjectBehavior
 {
@@ -17,6 +18,7 @@ class MetaDataManagerSpec extends ObjectBehavior
     
     function it_should_return_an_array_of_names_to_types()
     {
-        $this->properties(__CLASS__)->shouldReturn(array("test" => "int"));
+        $this->properties(__CLASS__)
+             ->shouldReturn(array("test" => "int", "testDate" => "DateTime"));
     }
 }

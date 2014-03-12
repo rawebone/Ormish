@@ -25,7 +25,12 @@ class MetaDataManager
         
         $map = array();
         foreach ($parser->getTagsByName("property") as $tag) {
-            $map[str_replace("$", "", $tag->getVariableName())] = $tag->getType();
+            $type = $tag->getType();
+            while ($type[0] === '\\') {
+                $type = substr($type, 1);
+            }
+
+            $map[str_replace("$", "", $tag->getVariableName())] = $type;
         }
         
         $this->propertyCache[$class] = $map;
