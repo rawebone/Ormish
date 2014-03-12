@@ -43,7 +43,7 @@ $db->get('MyEntity')->find(1);
 
 Rawebone\Ormish\Entity::globalsDatabase($db);
 
-MyEntity::find(1); // translates to $db->get('MyEntity')->find(1);
+MyEntity::find(1); // translates to Rawebone\Ormish\Entity::$globalDatabase->get('MyEntity')->find(1);
 
 /**
  * This gives us parity with other systems while only really
