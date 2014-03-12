@@ -27,15 +27,21 @@ class SaverSpec extends AbstractActionSpec
      * @param \Rawebone\Ormish\Table $tbl
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
      * @param \Rawebone\Ormish\Executor $ex
+     * @param \Rawebone\Ormish\Utilities\Caster $caster
+     * @param \Rawebone\Ormish\Utilities\EntityManager $em
      */
-    function it_should_try_to_insert($ent, $tbl, $gen, $ex)
+    function it_should_try_to_insert($ent, $tbl, $gen, $ex, $caster, $em)
     {
         $tbl->readOnly()->willReturn(false);
         $tbl->id()->willReturn("id");
         $tbl->table()->willReturn("table");
+        $tbl->model()->willReturn("Entity");
 
         $ent->id = null;
         $ent->all()->willReturn(array());
+
+        $em->properties('Entity')->willReturn(array());
+        $caster->toDbTypes(array(), array())->willReturn(array());
 
         $gen->insert("table", array())->willReturn(array("query", array()));
 
@@ -54,15 +60,21 @@ class SaverSpec extends AbstractActionSpec
      * @param \Rawebone\Ormish\Table $tbl
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
      * @param \Rawebone\Ormish\Executor $ex
+     * @param \Rawebone\Ormish\Utilities\Caster $caster
+     * @param \Rawebone\Ormish\Utilities\EntityManager $em
      */
-    function it_should_try_to_insert_and_fail($ent, $tbl, $gen, $ex)
+    function it_should_try_to_insert_and_fail($ent, $tbl, $gen, $ex, $caster, $em)
     {
         $tbl->readOnly()->willReturn(false);
         $tbl->id()->willReturn("id");
         $tbl->table()->willReturn("table");
+        $tbl->model()->willReturn("Entity");
 
         $ent->id = null;
         $ent->all()->willReturn(array());
+
+        $em->properties('Entity')->willReturn(array());
+        $caster->toDbTypes(array(), array())->willReturn(array());
 
         $gen->insert("table", array())->willReturn(array("query", array()));
 
@@ -76,15 +88,21 @@ class SaverSpec extends AbstractActionSpec
      * @param \Rawebone\Ormish\Table $tbl
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
      * @param \Rawebone\Ormish\Executor $ex
+     * @param \Rawebone\Ormish\Utilities\Caster $caster
+     * @param \Rawebone\Ormish\Utilities\EntityManager $em
      */
-    function it_should_try_to_update($ent, $tbl, $gen, $ex)
+    function it_should_try_to_update($ent, $tbl, $gen, $ex, $caster, $em)
     {
         $tbl->readOnly()->willReturn(false);
         $tbl->id()->willReturn("id");
         $tbl->table()->willReturn("table");
+        $tbl->model()->willReturn("Entity");
 
         $ent->id = 1;
         $ent->changes()->willReturn(array());
+
+        $em->properties('Entity')->willReturn(array());
+        $caster->toDbTypes(array(), array())->willReturn(array());
 
         $gen->update("table", array(), "id", 1)->willReturn(array("query", array()));
 
@@ -99,15 +117,21 @@ class SaverSpec extends AbstractActionSpec
      * @param \Rawebone\Ormish\Table $tbl
      * @param \Rawebone\Ormish\SqlGeneratorInterface $gen
      * @param \Rawebone\Ormish\Executor $ex
+     * @param \Rawebone\Ormish\Utilities\Caster $caster
+     * @param \Rawebone\Ormish\Utilities\EntityManager $em
      */
-    function it_should_try_to_update_and_fail($ent, $tbl, $gen, $ex)
+    function it_should_try_to_update_and_fail($ent, $tbl, $gen, $ex, $caster, $em)
     {
         $tbl->readOnly()->willReturn(false);
         $tbl->id()->willReturn("id");
         $tbl->table()->willReturn("table");
+        $tbl->model()->willReturn("Entity");
 
         $ent->id = 1;
         $ent->changes()->willReturn(array());
+
+        $em->properties('Entity')->willReturn(array());
+        $caster->toDbTypes(array(), array())->willReturn(array());
 
         $gen->update("table", array(), "id", 1)->willReturn(array("query", array()));
 

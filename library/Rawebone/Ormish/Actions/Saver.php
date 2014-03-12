@@ -28,7 +28,9 @@ class Saver extends AbstractAction
 
     protected function tryInsert($id, Entity $entity)
     {
-        list($query, $params) = $this->generator->insert($this->table->table(), $entity->all());
+        $data = $this->uncastParams($entity->all());
+
+        list($query, $params) = $this->generator->insert($this->table->table(), $data);
         $this->executor->exec($query, $params);
 
         $entity->$id = (int)$this->executor->lastInsertId();
@@ -36,8 +38,16 @@ class Saver extends AbstractAction
 
     protected function tryUpdate($id, Entity $entity)
     {
-        list($query, $params) = $this->generator->update($this->table->table(), $entity->changes(), $id, $entity->$id);
+        $data = $this->uncastParams($entity->changes());
+
+        list($query, $params) = $this->generator->update($this->table->table(), $data, $id, $entity->$id);
 
         $this->executor->exec($query, $params);
+    }
+
+    protected function uncastParams(array $data)
+    {
+        $map = $this->entityManager->properties($this->table->model());
+        return $this->caster->toDbTypes($map, $data);
     }
 }
