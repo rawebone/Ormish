@@ -76,7 +76,7 @@ class EntityManagerSpec extends ObjectBehavior
             "c" => ""
         ));
         
-        $objects->create($name, array("id" => null, "a" => "b", "c" => ""))->willReturn(true);
+        $objects->create($name, array("id" => null, "a" => "b", "c" => ""), false)->willReturn(true);
         $this->create($name, $idField, $values)->shouldReturn(true);
     }
 

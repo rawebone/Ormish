@@ -17,7 +17,13 @@ class ObjectCreatorSpec extends ObjectBehavior
         $this->create('Rawebone\Ormish\Utilities\NullShadow', array())
              ->shouldReturnAnInstanceOf('Rawebone\Ormish\Utilities\NullShadow');
     }
-    
+
+    function it_should_create_without_unpacking_arguments()
+    {
+        $this->create('Rawebone\Ormish\Entity', array("a" => "b"), false)
+             ->shouldReturnAnInstanceOf('Rawebone\Ormish\Entity');
+    }
+
     function it_should_throw_a_reflection_exception_if_invalid_name_passed()
     {
         $this->shouldThrow('ReflectionException')->during("create", array(

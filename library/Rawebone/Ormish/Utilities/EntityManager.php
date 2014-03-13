@@ -87,7 +87,7 @@ class EntityManager
             $data[$idField] = null;
         }
         
-        return $this->objects->create($name, $data);
+        return $this->objects->create($name, $data, false);
     }
 
     /**

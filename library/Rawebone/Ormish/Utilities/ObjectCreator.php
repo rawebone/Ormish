@@ -11,9 +11,11 @@ class ObjectCreator
 {
     protected $reflections = array();
 
-    public function create($name, array $arguments = array())
+    public function create($name, array $arguments = array(), $unpack = true)
     {
-        return $this->getReflection($name)->newInstanceArgs($arguments);
+        $rc = $this->getReflection($name);
+
+        return ($unpack ? $rc->newInstanceArgs($arguments) : $rc->newInstance($arguments));
     }
     
     /**
