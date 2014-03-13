@@ -149,7 +149,7 @@ use the API.
 * Implement a type mapping system. This will be breaking as will it require
   additional annotations on the Entities. (100%)
 * Implement annotations for Tables and deprecate attaching tables manually. This
-  will help keep the Entities close to the database.
+  will help keep the Entities close to the database. (100%)
 * Implement `Relationship` handling in a similar fashion to the `Actions`.
 
 ### For Version 0.4.0
