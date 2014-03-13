@@ -10,46 +10,37 @@ class Database
 {
     protected $executor;
     protected $factory;
+    protected $entityManager;
     
     /**
      * @var \Rawebone\Ormish\GatewayInterface
      */
     protected $tables = array();
 
-    public function __construct(Executor $exec, ActionFactory $factory)
+    public function __construct(Executor $exec, ActionFactory $factory, EntityManager $entityManager)
     {
         $this->executor = $exec;
         $this->factory = $factory;
+        $this->entityManager = $entityManager;
     }
 
     /**
-     * "Magic" method, routes to get.
-     * 
-     * @see get()
-     * @param string $name
-     * @param array $args
-     * @return \Rawebone\Ormish\GatewayInterface
-     */
-    public function __call($name, $args)
-    {
-        return $this->get($name);
-    }
-    
-    /**
      * Attaches a table to the database for use.
      * 
-     * @param \Rawebone\Ormish\Table $tbl
+     * @param string $entity
      * @return \Rawebone\Ormish\Database
      */
-    public function attach(Table $tbl)
+    public function attach($entity)
     {
+        $table = $this->entityManager->table($entity);
+
         $gate = new Gateway(
                 $this, 
-                $tbl, 
+                $table,
                 $this->factory
         );
-        $this->tables[$tbl->table()] = $gate;
-        return $this;
+        $this->tables[$table->model()] = $gate;
+        return true;
     }
 
     /**

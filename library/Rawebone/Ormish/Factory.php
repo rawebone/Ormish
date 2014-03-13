@@ -56,7 +56,7 @@ class Factory
         
         $exec = $this->objects->create($this->execClass, array($pdo, $this->log));
         $factory = new ActionFactory($this->em, $exec, $this->pop, $this->gen, $this->objects, $this->caster);
-        return $this->objects->create($this->dbClass, array($exec, $factory));
+        return $this->objects->create($this->dbClass, array($exec, $factory, $this->em));
     }
     
     /**
