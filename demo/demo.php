@@ -8,6 +8,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 include_once __DIR__ . "/MyEntity.php";
+include_once __DIR__ . "/EchoLog.php";
 
 build_demo_database(($db = __DIR__ . "/demo.db"));
 
@@ -22,6 +23,7 @@ build_demo_database(($db = __DIR__ . "/demo.db"));
 /// details and it gives you a configured Ormish database connection.
 
 $factory  = new \Rawebone\Ormish\Factory("sqlite:$db", "", "");
+$factory->setLogger(new EchoLog());
 $database = $factory->build();
 
 
@@ -72,10 +74,12 @@ $entity = MyEntity::find(1);
 function build_demo_database($file)
 {
     touch($file);
-    $pdo = new \PDO("sqlite:$file", "", "");
+    $pdo = new \PDO("sqlite:$file", "", "", array(
+        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+    ));
 
     // Build the table
-    $sql = "CREATE DATABASE my_entities (" .
+    $sql = "CREATE TABLE my_entities (" .
         "id INTEGER PRIMARY KEY AUTOINCREMENT, " .
         "deleted INTEGER, " .
         "my_float REAL, " .

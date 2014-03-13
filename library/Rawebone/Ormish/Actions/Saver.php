@@ -30,6 +30,10 @@ class Saver extends AbstractAction
     {
         $data = $this->uncastParams($entity->all());
 
+        if (isset($data[$id])) {
+            unset($data[$id]);
+        }
+
         list($query, $params) = $this->generator->insert($this->table->table(), $data);
         $this->executor->exec($query, $params);
 

@@ -23,11 +23,9 @@
  *
  * @primaryKey id
  * @table my_entities
- * @softDelete
- * @readOnly
  *
- * "softDelete" means that 'deleted' will be set to 1 instead of a deletion being issued.
- * "readOnly" prevents deletions, inserts or updates being made on the table.
+ * "softDelete" can be specified and means that 'deleted' will be set to 1 instead of a deletion being issued.
+ * Specifying "readOnly" prevents deletions, inserts or updates being made on the table.
  */
 class MyEntity extends \Rawebone\Ormish\Entity
 {
