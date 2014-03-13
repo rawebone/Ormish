@@ -77,13 +77,14 @@ class EntityManager
      * @param string $name
      * @param string $idField
      * @param array $initial
+     * @param boolean $nullID
      * @return \Rawebone\Ormish\Entity
      */
-    public function create($name, $idField, array $initial)
+    public function create($name, $idField, array $initial, $nullID = true)
     {
         $data = array_merge($this->defaults($name), $initial);
 
-        if (isset($data[$idField])) { // ID's should always be null on new instances
+        if ($nullID && isset($data[$idField])) { // ID's should always be null on new instances
             $data[$idField] = null;
         }
         

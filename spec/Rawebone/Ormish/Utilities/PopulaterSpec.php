@@ -35,7 +35,7 @@ class PopulaterSpec extends ObjectBehavior
                ->willReturn(array("a" => "b"));
 
         $entityManager->properties($cls)->willReturn(array("a" => "string"));
-        $entityManager->create($cls, $id, array("a" => "b"))->willReturn(array($entity));
+        $entityManager->create($cls, $id, array("a" => "b"), false)->willReturn(array($entity));
 
         $this->populate($stmt, $cls, $id)->shouldHaveCount(1);
     }

@@ -80,6 +80,23 @@ class EntityManagerSpec extends ObjectBehavior
         $this->create($name, $idField, $values)->shouldReturn(true);
     }
 
+    function it_should_create_an_entity_without_nulling_the_id($defaults, $mdm, $objects)
+    {
+        $name = "test";
+        $idField = "id";
+        $values  = array("a" => "b");
+
+        $mdm->properties($name)->willReturn(array());
+        $defaults->make(array())->willReturn(array(
+                "id" => 1,
+                "a" => "",
+                "c" => ""
+            ));
+
+        $objects->create($name, array("id" => 1, "a" => "b", "c" => ""), false)->willReturn(true);
+        $this->create($name, $idField, $values, false)->shouldReturn(true);
+    }
+
     function it_should_return_a_table_for_an_entity($mdm)
     {
         $mdm->table("Entity")->willReturn(array(

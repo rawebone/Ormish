@@ -27,7 +27,7 @@ class Populater
 
         while (($record = $stmt->fetch(\PDO::FETCH_ASSOC))) {
             $casted = $this->caster->toPhpTypes($castMap, $record);
-            $records[] = $this->entityManager->create($className, $idField, $casted);
+            $records[] = $this->entityManager->create($className, $idField, $casted, false);
         }
         return $records;
     }
