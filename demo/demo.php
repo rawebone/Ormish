@@ -37,7 +37,7 @@ $database->attach('MyEntity');
 
 /// Now, we can create a new Entity through the API
 $created = $database->get('MyEntity')->create(array("aString" => "blah"));
-$created->my_float = 1.0; // Amend the values
+$created->my_float = 1.3; // Amend the values
 $created->save();
 
 /// Now we can use the finding methods built into the gateway
